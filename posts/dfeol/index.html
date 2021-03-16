@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.nasx.top","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="平台 hexo 3.9 next 7.3  hexo搭建好之后一定少不了各种优化，在此推荐自用的主题&amp;好用的插件 美化NexT主题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo 优化篇">
+<meta property="og:url" content="https://blog.nasx.top/posts/dfeol/index.html">
+<meta property="og:site_name" content="Fart">
+<meta property="og:description" content="平台 hexo 3.9 next 7.3  hexo搭建好之后一定少不了各种优化，在此推荐自用的主题&amp;好用的插件 美化NexT主题">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qn.nasx.top/20190820203133.png">
+<meta property="og:image" content="https://qn.nasx.top/20190820202952.png">
+<meta property="og:image" content="https://qn.nasx.top/20190820171821.png">
+<meta property="og:image" content="https://qn.nasx.top/20190820180451.png">
+<meta property="og:image" content="https://qn.nasx.top/20190820172841.png">
+<meta property="og:image" content="https://qn.nasx.top/20190820174343.png">
+<meta property="og:image" content="https://qn.nasx.top/20190820175753.png">
+<meta property="og:image" content="https://qn.nasx.top/20190820180145.png">
+<meta property="og:image" content="https://qn.nasx.top/20190820190604.png">
+<meta property="og:image" content="https://qn.nasx.top/20190820200616.png">
+<meta property="og:image" content="https://qn.nasx.top/20190821000220.png">
+<meta property="article:published_time" content="2019-08-17T13:35:34.000Z">
+<meta property="article:modified_time" content="2019-08-17T13:35:34.000Z">
+<meta property="article:author" content="Fart">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qn.nasx.top/20190820203133.png">
+
+<link rel="canonical" href="https://blog.nasx.top/posts/dfeol/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>hexo 优化篇 | Fart</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fart</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/fengbrute" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.nasx.top/posts/dfeol/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Fart">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fart">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hexo 优化篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-08-17 21:35:34" itemprop="dateCreated datePublished" datetime="2019-08-17T21:35:34+08:00">2019-08-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/posts/dfeol/" class="post-meta-item leancloud_visitors" data-flag-title="hexo 优化篇" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/dfeol/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/dfeol/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="平台"><a href="#平台" class="headerlink" title="平台"></a>平台</h1><ul>
+<li>hexo 3.9</li>
+<li>next 7.3</li>
+</ul>
+<p><code>hexo</code>搭建好之后一定少不了各种优化，在此推荐自用的主题&amp;好用的插件</p>
+<h1 id="美化"><a href="#美化" class="headerlink" title="美化"></a>美化</h1><h2 id="NexT主题"><a href="#NexT主题" class="headerlink" title="NexT主题"></a>NexT主题</h2><a id="more"></a>
+
+<div style="text-align: center">
+  <div class="github-card"
+    data-user="theme-next"
+    data-repo="hexo-theme-next"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<h3 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h3><p>需要<code>git</code>环境，进入<code>hexo</code>根目录，然后克隆项目最新代码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><p>修改<code>hexo</code>配置文件<code>_config.yml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure>
+
+<p>至此，主题选择完毕</p>
+<h3 id="主题配置"><a href="#主题配置" class="headerlink" title="主题配置"></a>主题配置</h3><h4 id="网站图标设置"><a href="#网站图标设置" class="headerlink" title="网站图标设置"></a>网站图标设置</h4><h5 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h5><p><img data-src="https://qn.nasx.top/20190820203133.png" alt="img"></p>
+<h5 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h5><p>修改文件<code>hexo/themes/next/_config.yml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">favicon:</span></span><br><span class="line">  <span class="attr">small:</span> <span class="string">/images/favicon-16x16-brute.jpg</span></span><br><span class="line">  <span class="attr">medium:</span> <span class="string">/images/favicon-32x32-brute.jpg</span></span><br><span class="line">  <span class="attr">apple_touch_icon:</span> <span class="string">/images/apple-touch-icon-next.png</span></span><br><span class="line">  <span class="attr">safari_pinned_tab:</span> <span class="string">/images/logo.svg</span></span><br><span class="line">  <span class="comment">#android_manifest: /images/manifest.json</span></span><br><span class="line">  <span class="comment">#ms_browserconfig: /images/browserconfig.xml</span></span><br></pre></td></tr></table></figure>
+
+<p>将自己的网站图片放到目录<code>hexo/themes/next/source/images</code>中</p>
+<h4 id="去除底部Powered信息"><a href="#去除底部Powered信息" class="headerlink" title="去除底部Powered信息"></a>去除底部<code>Powered</code>信息</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">powered:</span></span><br><span class="line">   <span class="comment"># Hexo link (Powered by Hexo).</span></span><br><span class="line">   <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">   <span class="comment"># Version info of Hexo after Hexo link (vX.X.X).</span></span><br><span class="line">   <span class="attr">version:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"> <span class="attr">theme:</span></span><br><span class="line">   <span class="comment"># Theme &amp; scheme info link (Theme - NexT.scheme).</span></span><br><span class="line">   <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">   <span class="comment"># Version info of NexT after scheme info (vX.X.X).</span></span><br><span class="line">   <span class="attr">version:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="添加备案"><a href="#添加备案" class="headerlink" title="添加备案"></a>添加备案</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">beian:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">icp:</span> <span class="string">xxxxxx</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="menu"><a href="#menu" class="headerlink" title="menu"></a>menu</h4><h5 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h5><p><img data-src="https://qn.nasx.top/20190820202952.png" alt="img"></p>
+<h5 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h5><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">home</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">archive</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="attr">GitHub:</span> <span class="string">https://github.com/fengbrute</span> <span class="string">||</span> <span class="string">github</span></span><br><span class="line">  <span class="attr">E-Mail:</span> <span class="string">mailto:fengbrute@qq.com</span> <span class="string">||</span> <span class="string">envelope</span></span><br><span class="line">  <span class="attr">Weibo:</span> <span class="string">https://weibo.com/fengbrute</span> <span class="string">||</span> <span class="string">weibo</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="头像"><a href="#头像" class="headerlink" title="头像"></a>头像</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">/images/avatar.jpg</span> <span class="comment">#支持完整的url链接</span></span><br><span class="line">  <span class="attr">rounded:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">rotated:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="侧边栏位置"><a href="#侧边栏位置" class="headerlink" title="侧边栏位置"></a>侧边栏位置</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">sidebar:</span></span><br><span class="line">  <span class="attr">position:</span> <span class="string">left</span></span><br><span class="line">  <span class="attr">display:</span> <span class="string">post</span> </span><br><span class="line">  <span class="attr">offset:</span> <span class="number">12</span></span><br><span class="line">  <span class="attr">onmobile:</span> <span class="literal">true</span> <span class="comment">#Enable sidebar on narrow view (only for Muse | Mist).</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="聊天插件"><a href="#聊天插件" class="headerlink" title="聊天插件"></a>聊天插件</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">chat:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">service:</span> <span class="string">chatra</span></span><br><span class="line">  <span class="comment">#service: tidio</span></span><br><span class="line">  <span class="attr">icon:</span> <span class="string">comment</span> <span class="comment"># Icon name in Font Awesome, set false to disable icon.</span></span><br><span class="line">  <span class="attr">text:</span> <span class="string">Chat</span> <span class="comment"># Button text, change it as you wish.</span></span><br><span class="line">  </span><br><span class="line"><span class="attr">chatra:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">async:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">id:</span> <span class="string">xxxxx</span> <span class="comment"># Visit Dashboard to get your ChatraID</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="tag图标"><a href="#tag图标" class="headerlink" title="tag图标"></a>tag图标</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">tag_icon:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="back2top"><a href="#back2top" class="headerlink" title="back2top"></a>back2top</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">back2top:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Back to top in sidebar.</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># Scroll percent label in b2t button.</span></span><br><span class="line">  <span class="attr">scrollpercent:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="进度条"><a href="#进度条" class="headerlink" title="进度条"></a>进度条</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">reading_progress:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Available values: top | bottom</span></span><br><span class="line">  <span class="attr">position:</span> <span class="string">top</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">"#37c6c0"</span></span><br><span class="line">  <span class="attr">height:</span> <span class="string">2px</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="书签"><a href="#书签" class="headerlink" title="书签"></a>书签</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">bookmark:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Customize the color of the bookmark.</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">"#222"</span></span><br><span class="line">  <span class="comment"># If auto, save the reading progress when closing the page or clicking the bookmark-icon.</span></span><br><span class="line">  <span class="comment"># If manual, only save it by clicking the bookmark-icon.</span></span><br><span class="line">  <span class="attr">save:</span> <span class="string">auto</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Github-banner"><a href="#Github-banner" class="headerlink" title="Github banner"></a>Github banner</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">github_banner:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">permalink:</span> <span class="string">https://github.com/fengbrute</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">Follow</span> <span class="string">me</span> <span class="string">on</span> <span class="string">GitHub</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="加载进度条"><a href="#加载进度条" class="headerlink" title="加载进度条"></a>加载进度条</h4><h5 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h5><p><code>themes/next</code>执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/theme-next/theme-next-pace source/lib/pace</span><br></pre></td></tr></table></figure>
+
+<h5 id="配置-2"><a href="#配置-2" class="headerlink" title="配置"></a>配置</h5><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Progress bar in the top during page loading.</span></span><br><span class="line"><span class="comment"># Dependencies: https://github.com/theme-next/theme-next-pace</span></span><br><span class="line"><span class="comment"># For more information: https://github.com/HubSpot/pace</span></span><br><span class="line"><span class="attr">pace:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Themes list:</span></span><br><span class="line">  <span class="comment"># big-counter | bounce | barber-shop | center-atom | center-circle | center-radar | center-simple</span></span><br><span class="line">  <span class="comment"># corner-indicator | fill-left | flat-top | flash | loading-bar | mac-osx | material | minimal</span></span><br><span class="line">  <span class="attr">theme:</span> <span class="string">minimal</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="开启动画"><a href="#开启动画" class="headerlink" title="开启动画"></a>开启动画</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Use velocity to animate everything.</span></span><br><span class="line"><span class="comment"># For more information: http://velocityjs.org</span></span><br><span class="line"><span class="attr">motion:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">async:</span> <span class="literal">true</span> <span class="comment">#异步加载</span></span><br><span class="line">  <span class="attr">transition:</span></span><br><span class="line">    <span class="comment"># Transition variants:</span></span><br><span class="line">    <span class="comment"># fadeIn | fadeOut | flipXIn | flipXOut | flipYIn | flipYOut | flipBounceXIn | flipBounceXOut | flipBounceYIn | flipBounceYOut</span></span><br><span class="line">    <span class="comment"># swoopIn | swoopOut | whirlIn | whirlOut | shrinkIn | shrinkOut | expandIn | expandOut</span></span><br><span class="line">    <span class="comment"># bounceIn | bounceOut | bounceUpIn | bounceUpOut | bounceDownIn | bounceDownOut | bounceLeftIn | bounceLeftOut | bounceRightIn | bounceRightOut</span></span><br><span class="line">    <span class="comment"># slideUpIn | slideUpOut | slideDownIn | slideDownOut | slideLeftIn | slideLeftOut | slideRightIn | slideRightOut</span></span><br><span class="line">    <span class="comment"># slideUpBigIn | slideUpBigOut | slideDownBigIn | slideDownBigOut | slideLeftBigIn | slideLeftBigOut | slideRightBigIn | slideRightBigOut</span></span><br><span class="line">    <span class="comment"># perspectiveUpIn | perspectiveUpOut | perspectiveDownIn | perspectiveDownOut | perspectiveLeftIn | perspectiveLeftOut | perspectiveRightIn | perspectiveRightOut</span></span><br><span class="line">    <span class="attr">post_block:</span> <span class="string">fadeIn</span></span><br><span class="line">    <span class="attr">post_header:</span> <span class="string">slideDownIn</span></span><br><span class="line">    <span class="attr">post_body:</span> <span class="string">slideDownIn</span></span><br><span class="line">    <span class="attr">coll_header:</span> <span class="string">slideLeftIn</span></span><br><span class="line">    <span class="comment"># Only for Pisces | Gemini.</span></span><br><span class="line">    <span class="attr">sidebar:</span> <span class="string">slideUpIn</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="底部心跳"><a href="#底部心跳" class="headerlink" title="底部心跳"></a>底部心跳</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">icon:</span></span><br><span class="line">  <span class="comment"># Icon name in Font Awesome. See: https://fontawesome.com/v4.7.0/icons/</span></span><br><span class="line">  <span class="comment"># `heart` is recommended with animation in red (#ff0000).</span></span><br><span class="line">  <span class="comment">#name: user</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">heart</span></span><br><span class="line">  <span class="comment"># If you want to animate the icon, set it to true.</span></span><br><span class="line">  <span class="attr">animated:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Change the color of icon, using Hex Code.</span></span><br><span class="line">  <span class="comment">#color: "#808080"</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">"#ff0000"</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h1><h2 id="一键安装"><a href="#一键安装" class="headerlink" title="一键安装"></a>一键安装</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexagon-cli</span><br><span class="line">npm install hexo-abbrlink --save</span><br><span class="line">npm install hexo-all-minifier --save</span><br><span class="line">npm install hexo-auto-category --save</span><br><span class="line">npm install hexo-blog-encrypt --save</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">npm install hexo-github-card --save</span><br><span class="line">npm install hexo-generator-feed --save</span><br><span class="line">npm install hexo-generator-searchdb --save</span><br><span class="line">npm install hexo-related-popular-posts --save</span><br><span class="line">npm install hexo-sage-posts --save</span><br><span class="line">npm install hexo-symbols-count-time --save</span><br><span class="line">npm install theme-next/hexo-next-share --save</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="hexagon"><a href="#hexagon" class="headerlink" title="hexagon"></a>hexagon</h2><div style="text-align: center">
+  <div class="github-card"
+    data-user="adamsiwiec"
+    data-repo="hexagon"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>查看<code>hexo</code>已安装插件列表的工具</p>
+<h3 id="效果-2"><a href="#效果-2" class="headerlink" title="效果"></a>效果</h3><p>可以看到<code>hexo</code>安装的插件列表</p>
+<p><img data-src="https://qn.nasx.top/20190820171821.png" alt="img"></p>
+<h3 id="Install-1"><a href="#Install-1" class="headerlink" title="Install"></a>Install</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexagon-cli</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usage-1"><a href="#Usage-1" class="headerlink" title="Usage"></a>Usage</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexa -l</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-github-card"><a href="#hexo-github-card" class="headerlink" title="hexo-github-card"></a>hexo-github-card</h2><div style="text-align: center">
+  <div class="github-card"
+    data-user="Gisonrg"
+    data-repo="hexo-github-card"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>让github仓库展示的更优雅，👆就是上面这个</p>
+<h3 id="Install-2"><a href="#Install-2" class="headerlink" title="Install"></a>Install</h3><p><code>hexo</code>根目录执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-github-card --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usage-2"><a href="#Usage-2" class="headerlink" title="Usage"></a>Usage</h3><p>简单用法如下，插件默认<code>width=400</code>，但是支持<code>width</code>指定。如果需要详细用法请移步 <a href="https://github.com/Gisonrg/hexo-github-card" target="_blank" rel="noopener">github</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% githubCard user:Gisonrg repo:hexo-github-card width:100% %&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-abbrlink"><a href="#hexo-abbrlink" class="headerlink" title="hexo-abbrlink"></a>hexo-abbrlink</h2><div style="text-align: center">
+  <div class="github-card"
+    data-user="rozbo"
+    data-repo="hexo-abbrlink"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>这个插件主要是方便定义文章路径的，如果不用这个插件的话，你的文章路径通常是按照日期加文章name的方式来的，如果文章标题是中文，那链接看着就更蛋疼了。</p>
+<h3 id="效果-3"><a href="#效果-3" class="headerlink" title="效果"></a>效果</h3><p><img data-src="https://qn.nasx.top/20190820180451.png" alt="img"></p>
+<h3 id="Install-3"><a href="#Install-3" class="headerlink" title="Install"></a>Install</h3><p>在<code>hexo</code>根目录执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-abbrlink --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usage-3"><a href="#Usage-3" class="headerlink" title="Usage"></a>Usage</h3><p>修改<code>hexo</code>配置文件<code>_config.yml</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">permalink: posts/:abbrlink/</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://qn.nasx.top/20190820172841.png" alt="img"></p>
+<p>这个就是文章的唯一id，访问的话就是 <code>域名</code>+<code>posts</code>+<code>id</code>就行,比如 <code>https://blog.nasx.top/posts/11145</code></p>
+<h2 id="hexo-auto-category"><a href="#hexo-auto-category" class="headerlink" title="hexo-auto-category"></a>hexo-auto-category</h2><div style="text-align: center">
+  <div class="github-card"
+    data-user="xu-song"
+    data-repo="hexo-auto-category"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>会按照<code>hexo/source/_posts</code>文件夹下的目录自动归类不用手动添加，当然如果你没有开启hexo的分类<code>page</code>的话需要先开启</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo n page categories</span><br></pre></td></tr></table></figure>
+
+<p>之后修改文件<code>hexo/source/categories/index.md</code>表头</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: categories</span><br><span class="line">date: 2019-08-19 18:49:24</span><br><span class="line">comments: false //不添加评论</span><br><span class="line">type: "categories"</span><br></pre></td></tr></table></figure>
+
+<p>准备工作做好后才能安装使用</p>
+<h3 id="效果-4"><a href="#效果-4" class="headerlink" title="效果"></a>效果</h3><p><img data-src="https://qn.nasx.top/20190820174343.png" alt="img"></p>
+<h3 id="Install-4"><a href="#Install-4" class="headerlink" title="Install"></a>Install</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-auto-category --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usage-4"><a href="#Usage-4" class="headerlink" title="Usage"></a>Usage</h3><p><code>hexo</code>配置<code>_config.yml</code>添加如下代码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">auto_category: </span><br><span class="line">	enable: true 	</span><br><span class="line">	depth: 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-generator-searchdb"><a href="#hexo-generator-searchdb" class="headerlink" title="hexo-generator-searchdb"></a>hexo-generator-searchdb</h2><p>这个插件提供了本地搜索文章搜索功能</p>
+<h3 id="效果-5"><a href="#效果-5" class="headerlink" title="效果"></a>效果</h3><p><img data-src="https://qn.nasx.top/20190820175753.png" alt="img"></p>
+<h3 id="Install-5"><a href="#Install-5" class="headerlink" title="Install"></a>Install</h3><p><code>hexo</code>根目录下执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usege"><a href="#Usege" class="headerlink" title="Usege"></a>Usege</h3><p>修改主题配置文件<code>hexo/themes/next/_config.yml</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">local_search:  </span><br><span class="line">	enable: true</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-symbols-count-time"><a href="#hexo-symbols-count-time" class="headerlink" title="hexo-symbols-count-time"></a>hexo-symbols-count-time</h2><div style="text-align: center">
+  <div class="github-card"
+    data-user="theme-next"
+    data-repo="hexo-symbols-count-time"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>统计文章字数，阅读时间等的插件</p>
+<h3 id="效果-6"><a href="#效果-6" class="headerlink" title="效果"></a>效果</h3><p><a href="https://qn.nasx.top/20190820180145.png" target="_blank" rel="noopener"><img data-src="https://qn.nasx.top/20190820180145.png" alt="img"></a></p>
+<h3 id="Install-6"><a href="#Install-6" class="headerlink" title="Install"></a>Install</h3><p><code>hexo</code>根目录执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-symbols-count-time --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usage-5"><a href="#Usage-5" class="headerlink" title="Usage"></a>Usage</h3><ul>
+<li><p>修改<code>hexo</code>配置<code>_config.yml</code></p>
+<p>添加配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">symbols_count_time:</span><br><span class="line">  symbols: true</span><br><span class="line">  time: true</span><br><span class="line">  total_symbols: false</span><br><span class="line">  total_time: false</span><br><span class="line">  exclude_codeblock: true //代码不计入字数</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改<code>next</code>主题配置<code>themes/next/_config.yml</code></p>
+<p>修改配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">symbols_count_time:  	</span><br><span class="line">	separated_meta: true  	</span><br><span class="line">	item_text_post: true  	</span><br><span class="line">	item_text_total: false  	</span><br><span class="line">	awl: 2    </span><br><span class="line">	wpm: 300      </span><br><span class="line">	suffix: mins.</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="hexo-deployer-git"><a href="#hexo-deployer-git" class="headerlink" title="hexo-deployer-git"></a>hexo-deployer-git</h2><div style="text-align: center">
+  <div class="github-card"
+    data-user="hexojs"
+    data-repo="hexo-deployer-git"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>网站在初始化时是没有部署插件的，如果要推送<code>github``coding</code>的<code>pages</code>服务就需要先安装这个插件</p>
+<h3 id="Install-7"><a href="#Install-7" class="headerlink" title="Install"></a>Install</h3><p><code>hexo</code>根目录执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usage-6"><a href="#Usage-6" class="headerlink" title="Usage"></a>Usage</h3><p>修改<code>hexo</code>配置<code>_config.yml</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:  	</span><br><span class="line">	type: git  	</span><br><span class="line">	repo:        		</span><br><span class="line">		coding: git@e.coding.net:fart/blog.git,master       		</span><br><span class="line">		github: git@github.com:fengbrute/fengbrute.github.io.git,master</span><br></pre></td></tr></table></figure>
+
+<p>这是同时<code>push</code>到<code>coding</code>以及<code>github</code>的写法</p>
+<h2 id="hexo-all-minifier"><a href="#hexo-all-minifier" class="headerlink" title="hexo-all-minifier"></a>hexo-all-minifier</h2><div style="text-align: center">
+  <div class="github-card"
+    data-user="chenzhutian"
+    data-repo="hexo-all-minifier"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>这个插件可以压缩网页源码，减少传输体积，加快访问速度</p>
+<h3 id="Install-8"><a href="#Install-8" class="headerlink" title="Install"></a>Install</h3><p><code>hexo</code>根目录执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-all-minifier --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usage-7"><a href="#Usage-7" class="headerlink" title="Usage"></a>Usage</h3><p><code>hexo/_config.yml</code>添加配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_minifier: true</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-related-popular-posts"><a href="#hexo-related-popular-posts" class="headerlink" title="hexo-related-popular-posts"></a>hexo-related-popular-posts</h2><div style="text-align: center">
+  <div class="github-card"
+    data-user="tea3"
+    data-repo="hexo-related-popular-posts"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>根据标签推荐文章的插件</p>
+<h3 id="效果-7"><a href="#效果-7" class="headerlink" title="效果"></a>效果</h3><p><img data-src="https://qn.nasx.top/20190820190604.png" alt="img"></p>
+<h3 id="Install-9"><a href="#Install-9" class="headerlink" title="Install"></a>Install</h3><p><code>hexo</code>根目录执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-related-popular-posts --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usage-8"><a href="#Usage-8" class="headerlink" title="Usage"></a>Usage</h3><p>修改主题配置<code>./themes/next/_config.yml</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">related_posts:  </span><br><span class="line">	enable: true</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-sage-posts"><a href="#hexo-sage-posts" class="headerlink" title="hexo-sage-posts"></a>hexo-sage-posts</h2><div style="text-align: center">
+  <div class="github-card"
+    data-user="printempw"
+    data-repo="hexo-sage-posts"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>隐藏文章用的，比如日记啥的</p>
+<h3 id="Install-10"><a href="#Install-10" class="headerlink" title="Install"></a>Install</h3><p><code>hexo</code>根目录执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-sage-posts --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usage-9"><a href="#Usage-9" class="headerlink" title="Usage"></a>Usage</h3><p>文章头部信息添加</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 'Lorem Ipsum'</span><br><span class="line">date: '2019/8/10 11:45:14'</span><br><span class="line">sage: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-blog-encrypt"><a href="#hexo-blog-encrypt" class="headerlink" title="hexo-blog-encrypt"></a>hexo-blog-encrypt</h2><div style="text-align: center">
+  <div class="github-card"
+    data-user="MikeCoder"
+    data-repo="hexo-blog-encrypt"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>博文加密用的</p>
+<h3 id="效果-8"><a href="#效果-8" class="headerlink" title="效果"></a>效果</h3><p><img data-src="https://qn.nasx.top/20190820200616.png" alt="img"></p>
+<h3 id="Install-11"><a href="#Install-11" class="headerlink" title="Install"></a>Install</h3><p><code>hexo</code>根目录执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-blog-encrypt</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usage-10"><a href="#Usage-10" class="headerlink" title="Usage"></a>Usage</h3><p><code>hexo/_config.yml</code>配置添加</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Securityencrypt: </span></span><br><span class="line">hexo-blog-encrypt  </span><br><span class="line">	enable: true</span><br></pre></td></tr></table></figure>
+
+<p>文章表头添加</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hello World</span><br><span class="line">date: 2016-03-30 21:18:02</span><br><span class="line">password: 123456 //添加</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-generator-feed"><a href="#hexo-generator-feed" class="headerlink" title="hexo-generator-feed"></a>hexo-generator-feed</h2><div style="text-align: center">
+  <div class="github-card"
+    data-user="hexojs"
+    data-repo="hexo-generator-feed"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>rss订阅用的</p>
+<h3 id="效果-9"><a href="#效果-9" class="headerlink" title="效果"></a>效果</h3><p><img data-src="https://qn.nasx.top/20190821000220.png" alt=""></p>
+<h2 id="theme-next-hexo-next-share"><a href="#theme-next-hexo-next-share" class="headerlink" title="theme-next/hexo-next-share"></a>theme-next/hexo-next-share</h2><div style="text-align: center">
+  <div class="github-card"
+    data-user="theme-next"
+    data-repo="hexo-next-share"
+    data-height="200"
+    data-width="100%"
+    data-theme="default"
+    data-target=""
+    data-client-id=""
+    data-client-secret=""
+  ></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p><code>nexT 7.3</code>用这个分享</p>
+<h3 id="Install-12"><a href="#Install-12" class="headerlink" title="Install"></a>Install</h3><p><code>hexo</code>根目录执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install theme-next/hexo-next-share --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="Usage-11"><a href="#Usage-11" class="headerlink" title="Usage"></a>Usage</h3><p>添加主题配置</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># NeedMoreShare2</span></span><br><span class="line"><span class="comment"># Dependencies: https://github.com/theme-next/theme-next-needmoreshare2</span></span><br><span class="line"><span class="comment"># For more information: https://github.com/revir/need-more-share2</span></span><br><span class="line"><span class="comment"># iconStyle: default | box</span></span><br><span class="line"><span class="comment"># boxForm: horizontal | vertical</span></span><br><span class="line"><span class="comment"># position: top / middle / bottom + Left / Center / Right</span></span><br><span class="line"><span class="comment"># networks:</span></span><br><span class="line"><span class="comment"># Weibo | Wechat | Douban | QQZone | Twitter | Facebook | Linkedin | Mailto | Reddit | Delicious | StumbleUpon | Pinterest</span></span><br><span class="line"><span class="comment"># GooglePlus | Tumblr | GoogleBookmarks | Newsvine | Evernote | Friendfeed | Vkontakte | Odnoklassniki | Mailru</span></span><br><span class="line"><span class="attr">needmoreshare:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">cdn:</span></span><br><span class="line">    <span class="attr">js:</span> <span class="string">//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js</span></span><br><span class="line">    <span class="attr">css:</span> <span class="string">//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css</span></span><br><span class="line">  <span class="attr">postbottom:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">options:</span></span><br><span class="line">      <span class="attr">iconStyle:</span> <span class="string">default</span></span><br><span class="line">      <span class="attr">boxForm:</span> <span class="string">horizontal</span></span><br><span class="line">      <span class="attr">position:</span> <span class="string">bottomCenter</span></span><br><span class="line">      <span class="attr">networks:</span> <span class="string">Weibo,Wechat,Douban,QQZone,Twitter,Facebook</span></span><br><span class="line">  <span class="attr">float:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">options:</span></span><br><span class="line">      <span class="attr">iconStyle:</span> <span class="string">default</span></span><br><span class="line">      <span class="attr">boxForm:</span> <span class="string">horizontal</span></span><br><span class="line">      <span class="attr">position:</span> <span class="string">middleRight</span></span><br><span class="line">      <span class="attr">networks:</span> <span class="string">Weibo,Wechat,Douban,QQZone,Twitter,Facebook</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h1><h2 id="新建文章直接打开编辑器"><a href="#新建文章直接打开编辑器" class="headerlink" title="新建文章直接打开编辑器"></a>新建文章直接打开编辑器</h2><p>在<code>hexo</code>根目录下新建文件夹<code>scripts</code>然后新建<code>js</code>文件名称随意取，然后将下面的代码写进去</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> spawn = <span class="built_in">require</span>(<span class="string">'child_process'</span>).exec;</span><br><span class="line">hexo.on(<span class="string">'new'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">  spawn(<span class="string">'start  "C:\Program Files\Typora\Typora.exe" '</span> + data.path);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>将编辑器替换成自己的绝对路径即可</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/7c4f8010/" rel="bookmark">hexo next valine.min.js 加载过慢</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/hexo.readmore/" rel="bookmark">hexo next 主题readmore</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/96fc5219/" rel="bookmark">hexo 建站篇</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/2241/" rel="bookmark">hexo同步&小技巧</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/17613/" rel="bookmark">hexo支持时许图</a></div>
+    </li>
+  </ul>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/hexo/" rel="tag"><i class="fa fa-tag"></i> hexo</a>
+          </div>
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#平台"><span class="nav-number">1.</span> <span class="nav-text">平台</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#美化"><span class="nav-number">2.</span> <span class="nav-text">美化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#NexT主题"><span class="nav-number">2.1.</span> <span class="nav-text">NexT主题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install"><span class="nav-number">2.1.1.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usage"><span class="nav-number">2.1.2.</span> <span class="nav-text">Usage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主题配置"><span class="nav-number">2.1.3.</span> <span class="nav-text">主题配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#网站图标设置"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">网站图标设置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#效果"><span class="nav-number">2.1.3.1.1.</span> <span class="nav-text">效果</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置"><span class="nav-number">2.1.3.1.2.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#去除底部Powered信息"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">去除底部Powered信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加备案"><span class="nav-number">2.1.3.3.</span> <span class="nav-text">添加备案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#menu"><span class="nav-number">2.1.3.4.</span> <span class="nav-text">menu</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#效果-1"><span class="nav-number">2.1.3.4.1.</span> <span class="nav-text">效果</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置-1"><span class="nav-number">2.1.3.4.2.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#链接"><span class="nav-number">2.1.3.5.</span> <span class="nav-text">链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#头像"><span class="nav-number">2.1.3.6.</span> <span class="nav-text">头像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#侧边栏位置"><span class="nav-number">2.1.3.7.</span> <span class="nav-text">侧边栏位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聊天插件"><span class="nav-number">2.1.3.8.</span> <span class="nav-text">聊天插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tag图标"><span class="nav-number">2.1.3.9.</span> <span class="nav-text">tag图标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#back2top"><span class="nav-number">2.1.3.10.</span> <span class="nav-text">back2top</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进度条"><span class="nav-number">2.1.3.11.</span> <span class="nav-text">进度条</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#书签"><span class="nav-number">2.1.3.12.</span> <span class="nav-text">书签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Github-banner"><span class="nav-number">2.1.3.13.</span> <span class="nav-text">Github banner</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加载进度条"><span class="nav-number">2.1.3.14.</span> <span class="nav-text">加载进度条</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装依赖"><span class="nav-number">2.1.3.14.1.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置-2"><span class="nav-number">2.1.3.14.2.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启动画"><span class="nav-number">2.1.3.15.</span> <span class="nav-text">开启动画</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#底部心跳"><span class="nav-number">2.1.3.16.</span> <span class="nav-text">底部心跳</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插件"><span class="nav-number">3.</span> <span class="nav-text">插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一键安装"><span class="nav-number">3.1.</span> <span class="nav-text">一键安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexagon"><span class="nav-number">3.2.</span> <span class="nav-text">hexagon</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#效果-2"><span class="nav-number">3.2.1.</span> <span class="nav-text">效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usage-1"><span class="nav-number">3.2.3.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-github-card"><span class="nav-number">3.3.</span> <span class="nav-text">hexo-github-card</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-2"><span class="nav-number">3.3.1.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usage-2"><span class="nav-number">3.3.2.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-abbrlink"><span class="nav-number">3.4.</span> <span class="nav-text">hexo-abbrlink</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#效果-3"><span class="nav-number">3.4.1.</span> <span class="nav-text">效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-3"><span class="nav-number">3.4.2.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usage-3"><span class="nav-number">3.4.3.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-auto-category"><span class="nav-number">3.5.</span> <span class="nav-text">hexo-auto-category</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#效果-4"><span class="nav-number">3.5.1.</span> <span class="nav-text">效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-4"><span class="nav-number">3.5.2.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usage-4"><span class="nav-number">3.5.3.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-generator-searchdb"><span class="nav-number">3.6.</span> <span class="nav-text">hexo-generator-searchdb</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#效果-5"><span class="nav-number">3.6.1.</span> <span class="nav-text">效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-5"><span class="nav-number">3.6.2.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usege"><span class="nav-number">3.6.3.</span> <span class="nav-text">Usege</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-symbols-count-time"><span class="nav-number">3.7.</span> <span class="nav-text">hexo-symbols-count-time</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#效果-6"><span class="nav-number">3.7.1.</span> <span class="nav-text">效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-6"><span class="nav-number">3.7.2.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usage-5"><span class="nav-number">3.7.3.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-deployer-git"><span class="nav-number">3.8.</span> <span class="nav-text">hexo-deployer-git</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-7"><span class="nav-number">3.8.1.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usage-6"><span class="nav-number">3.8.2.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-all-minifier"><span class="nav-number">3.9.</span> <span class="nav-text">hexo-all-minifier</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-8"><span class="nav-number">3.9.1.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usage-7"><span class="nav-number">3.9.2.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-related-popular-posts"><span class="nav-number">3.10.</span> <span class="nav-text">hexo-related-popular-posts</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#效果-7"><span class="nav-number">3.10.1.</span> <span class="nav-text">效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-9"><span class="nav-number">3.10.2.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usage-8"><span class="nav-number">3.10.3.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-sage-posts"><span class="nav-number">3.11.</span> <span class="nav-text">hexo-sage-posts</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-10"><span class="nav-number">3.11.1.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usage-9"><span class="nav-number">3.11.2.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-blog-encrypt"><span class="nav-number">3.12.</span> <span class="nav-text">hexo-blog-encrypt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#效果-8"><span class="nav-number">3.12.1.</span> <span class="nav-text">效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-11"><span class="nav-number">3.12.2.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usage-10"><span class="nav-number">3.12.3.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-generator-feed"><span class="nav-number">3.13.</span> <span class="nav-text">hexo-generator-feed</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#效果-9"><span class="nav-number">3.13.1.</span> <span class="nav-text">效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#theme-next-hexo-next-share"><span class="nav-number">3.14.</span> <span class="nav-text">theme-next&#x2F;hexo-next-share</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-12"><span class="nav-number">3.14.1.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Usage-11"><span class="nav-number">3.14.2.</span> <span class="nav-text">Usage</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#输入"><span class="nav-number">4.</span> <span class="nav-text">输入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#新建文章直接打开编辑器"><span class="nav-number">4.1.</span> <span class="nav-text">新建文章直接打开编辑器</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Fart"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Fart</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengbrute" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengbrute" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fengbrute@qq.com" title="E-Mail → mailto:fengbrute@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fengbrute" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fengbrute" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fart</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">155k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:29</span>
+</div>
+
+
+        
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              })
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=Cu5hv7V1QMPq7AdjyURssVXX-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : 'Cu5hv7V1QMPq7AdjyURssVXX-gzGzoHsz',
+            'X-LC-Key'    : 'toOnmwMBckjo5Jyi54jK5ejF',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('div.pdf').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/pdfobject@2/pdfobject.min.js', () => {
+    document.querySelectorAll('div.pdf').forEach(element => {
+      PDFObject.embed(element.getAttribute('target'), element, {
+        pdfOpenParams: {
+          navpanes : 0,
+          toolbar  : 0,
+          statusbar: 0,
+          pagemode : 'thumbs',
+          view     : 'FitH'
+        },
+        PDFJS_URL: '/lib/pdf/web/viewer.html',
+        height   : element.getAttribute('height') || '500px'
+      });
+    });
+  }, window.PDFObject);
+}
+</script>
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'dark',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Cu5hv7V1QMPq7AdjyURssVXX-gzGzoHsz',
+      appKey     : 'toOnmwMBckjo5Jyi54jK5ejF',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

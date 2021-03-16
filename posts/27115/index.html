@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.nasx.top","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="打造完美黑群晖，最新 6.2.3 版本，正确显示 CPU，支持Nvme缓存，一步到位，养老NAS存储设备 12-24 10:22:05 7 0 大家好，我是晓飞影！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="群晖安装并修改cpu支援Nvme">
+<meta property="og:url" content="https://blog.nasx.top/posts/27115/index.html">
+<meta property="og:site_name" content="Fart">
+<meta property="og:description" content="打造完美黑群晖，最新 6.2.3 版本，正确显示 CPU，支持Nvme缓存，一步到位，养老NAS存储设备 12-24 10:22:05 7 0 大家好，我是晓飞影！">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715244_1608640549304.jpg">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715236_1608640549346.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715040_1608640548920.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715150_1608640548963.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715245_1608640549354.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714629_1608640553170.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715041_1608640548917.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714625_1608640549054.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714624_1608640548981.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715265_1608640553122.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714637_1608640549387.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714641_1608640553584.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715237_1608640549558.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714634_1608640549376.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715243_1608640549405.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715255_1608640548939.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714627_1608640549338.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715151_1608640548928.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715235_1608640549292.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715252_1608640548952.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715247_1608640549324.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715264_1608640553193.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715253_1608640548889.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715262_1608640548952.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714635_1608640549367.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715234_1608640549233.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715246_1608640549379.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714633_1608640549300.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714626_1608640549307.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714636_1608640549423.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715249_1608640553211.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714628_1608640553187.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714638_1608640549331.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715239_1608640553118.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715254_1608640549254.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715263_1608640553226.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715248_1608640549298.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714630_1608640553213.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714639_1608640549318.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715276_1608640553635.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715256_1608640553146.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715266_1608640553240.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715250_1608640553305.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714631_1608640553276.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714640_1608640553181.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715241_1608640553141.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715257_1608640553296.png">
+<meta property="og:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715271_1608640553593.png">
+<meta property="article:published_time" content="2021-01-23T02:30:25.000Z">
+<meta property="article:modified_time" content="2021-01-23T02:30:25.000Z">
+<meta property="article:author" content="Fart">
+<meta property="article:tag" content="群晖">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715244_1608640549304.jpg">
+
+<link rel="canonical" href="https://blog.nasx.top/posts/27115/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>群晖安装并修改cpu支援Nvme | Fart</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fart</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/fengbrute" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.nasx.top/posts/27115/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Fart">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fart">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          群晖安装并修改cpu支援Nvme
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-23 10:30:25" itemprop="dateCreated datePublished" datetime="2021-01-23T10:30:25+08:00">2021-01-23</time>
+            </span>
+
+          
+            <span id="/posts/27115/" class="post-meta-item leancloud_visitors" data-flag-title="群晖安装并修改cpu支援Nvme" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/27115/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/27115/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="打造完美黑群晖，最新-6-2-3-版本，正确显示-CPU，支持Nvme缓存，一步到位，养老NAS"><a href="#打造完美黑群晖，最新-6-2-3-版本，正确显示-CPU，支持Nvme缓存，一步到位，养老NAS" class="headerlink" title="打造完美黑群晖，最新 6.2.3 版本，正确显示 CPU，支持Nvme缓存，一步到位，养老NAS"></a>打造完美黑群晖，最新 6.2.3 版本，正确显示 CPU，支持Nvme缓存，一步到位，养老NAS</h1><p><a href="https://best.pconline.com.cn/fenlei/292/yuanchuang/" target="_blank" rel="noopener">存储设备</a> 12-24 10:22:05 <em>7</em> <em>0</em></p>
+<p>大家好，我是晓飞影！</p>
+<a id="more"></a>
+
+<p>一个数码爱好者，也喜欢在众多平行领域探究摸索，让生活多一点乐趣。</p>
+<p>之前分享了一台正版蜗牛星际 A 款机箱组装 NAS 的文章，搭配 i3-8100和华擎 H310CM-ITX/ac 主板，因为只有四盘位，所以我选择的是黑群晖系统，网上有各种各样的黑群晖安装方法，有的是装在固态上，有的镜像比较老，这次我打算还是用最稳定的办法，用 U 盘安装引导，安装 918+的镜像，系统版本是 6.2.3，应该是群晖 7.0 之前最稳定的系统版本了，不过这个镜像文件还是会出现 CPU 显示不正确，这个其实就看自己是否是强迫症了，很不幸，我就是如此，必须要能正确显示 CPU，还有黑群晖不支持 Nvme 的固态缓存识别，这次也一并解决。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715244_1608640549304.jpg" alt=""></p>
+<p>这篇文章的目的就是达到目前能想到的最完美的黑群晖的状态。</p>
+<p>所需要的文件有以下几样：</p>
+<p>ChipGenius    查看 U 盘信息的软件</p>
+<p>Etcher（Win32DiskImager也可以）    镜像写入软件</p>
+<p>DiskGenius    修改U 盘引导</p>
+<p>synoboot.img    黑群晖 U 盘引导镜像</p>
+<p>DSM_DS918+_25426.pat    黑群晖最新镜像 DS918 6.2.3-25426系统文件</p>
+<p>ch_cpuinfo    正确显示黑群晖 CPU 补丁</p>
+<p>libsynonvme.so.1    正确识别黑群晖主板 Nvme 固态补丁</p>
+<p><a href="https://best.pconline.com.cn/ubb_load.jsp?url=5OeODZphIDvE53fS8nskZ2Xfj8UWjvUYUsqA7%2BoeD5DFYIlyNPnQ9g67DnnA8ALcMApAJizxy3s3Z4I3qwqn1A%3D%3D" target="_blank" rel="noopener">链接：</a>提取码: yb86</p>
+<h1 id="制作系统-U-盘"><a href="#制作系统-U-盘" class="headerlink" title="制作系统 U 盘"></a>制作系统 U 盘</h1><p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715236_1608640549346.png" alt=""></p>
+<p>首先准备一个U盘，8G就足以，打开ChipGenius软件查看pid等信息。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715040_1608640548920.png" alt=""></p>
+<p>如图 VID=0951，PID=1642，记录下来。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715150_1608640548963.png" alt=""></p>
+<p>然后开始写入引导镜像，写入软件我习惯用 Etcher，页面比较友好，常见的 Win32DiskImager 也是一个原理，先选择镜像，然后选择写入设备，最后写入。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715245_1608640549354.png" alt=""></p>
+<p>通过 DiskGenius 找到刚刚写好镜像的U盘文件，点击 grub 文件夹左侧的 + 号展开，在右侧可以看到 grub.cfg 文件，复制到桌面。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714629_1608640553170.png" alt=""></p>
+<p>用记事本的方式打开桌面的 grub.cfg 文件，找到 vid 和 pid 一栏，其中 sn 和 mac1 可以通过洗白来修改，因为我有公网IP，这个操作意义不大，现在群晖也开始实名制了，所以建议还是不要占用白裙的服务器资源。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715041_1608640548917.png" alt=""></p>
+<p>将 vid 和 pid 修改为自己U盘的vid和pid，注意前缀 0x 不要删除，否则在黑群晖里会识别出引导 U 盘的存储空间，会显示的很杂乱，一不小心就把套件安装上去了，遇到这种情况就回头看看是否 pid 和 vid 没有写对。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714625_1608640549054.png" alt=""></p>
+<p>直接把桌面的 grub.cfg 文件往 DiskGenius 右侧文件夹区域拖拽，会提示是否覆盖原文件，点击确定，启动U盘就做好了，接下来插到主机上，设置BIOS里U盘启动，开机。</p>
+<p>关于修改引导 grub.cfg 文件，其实还有个办法就是直接在最开始 synoboot.img 里修改，改完了再写入 U 盘就好了，原理都是一样的，我只是习惯了先写镜像到 U 盘再改引导。</p>
+<h1 id="安装黑群晖系统"><a href="#安装黑群晖系统" class="headerlink" title="安装黑群晖系统"></a>安装黑群晖系统</h1><p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714624_1608640548981.png" alt=""></p>
+<p>在群晖官网下载 Synology Assistant 程序，其实也有网页版可以直接使用。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715265_1608640553122.png" alt=""></p>
+<p>开机后只要在同一个局域网内，Synology Assistant 能扫描到所有的群晖设备，如图我已经装好了一个，这是第二台。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714637_1608640549387.png" alt=""></p>
+<p>如果一直扫描不出来，或者提示上图的连接失败，我建议电脑关闭防火墙，然后网线直连主机，再扫描一次，基本就没问题了，大部分人都是如此解决了。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714641_1608640553584.png" alt=""></p>
+<p>点击 DSM 未安装的那台黑群晖，联机跳转到网页，注意在此页面一定要选择手动安装。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715237_1608640549558.png" alt=""></p>
+<p>U盘引导的黑群晖，系统是装在硬盘里的，所以至少准备一块硬盘，系统就是图中的 DSM_DS918+25426.pat ，目前最新的系统，很稳定。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714634_1608640549376.png" alt=""></p>
+<p>提示硬盘里的数据都会被删除，打钩后点确定。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715243_1608640549405.png" alt=""></p>
+<p>接下来就是安静的等待安装了，可以去喝口水活动下脖子。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715255_1608640548939.png" alt=""></p>
+<p>设定服务器信息，名称随意，用户名我建议不要用 admin，因为网上很多端口扫描的攻击找到暴露到公网的群晖后，都会从默认 5000 端口和默认账户 admin 开始尝试攻击。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714627_1608640549338.png" alt=""></p>
+<p>作为黑群晖用户，这里肯定就是跳过此步骤了。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715151_1608640548928.png" alt=""></p>
+<p>接下来就是引导操作，直接进入系统，到控制面板-信息中心看一下，果然 CPU 名称显示错误，还是 DS918+ 的 J3455 CPU， 内存倒是显示正常。其实 CPU 显示错误倒也不影响使用，不过强迫症让我还是想修正。</p>
+<h1 id="显示真实的-CPU"><a href="#显示真实的-CPU" class="headerlink" title="显示真实的 CPU"></a>显示真实的 CPU</h1><p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715235_1608640549292.png" alt=""></p>
+<p>首先在控制面板-终端机和 SNMP 里，将黑群晖的启用 SSH 功能开启，默认端口 22。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715252_1608640548952.png" alt=""></p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715247_1608640549324.png" alt=""></p>
+<p>在控制面板-共享文件夹创建一个新的文件夹，用于放补丁，随便取什么名字，比如我写的是 patch，注意看我这里是存储空间 2，对应的是 volume2，如果是存储空间 1，对应的路径就是 volume1，后面ssh 连接时根据实际情况更改。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715264_1608640553193.png" alt=""></p>
+<p>然后将 ch_cpuinfo.zip 解压后的 ch_cpuinfo 上传到这个文件夹内，可以通过网页直接上传，也可以通过 SMB 协议在局域网传输过去。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715253_1608640548889.png" alt=""></p>
+<p>接下来通过 ssh 连接到黑群晖的主机，windows可以用 putty 软件，mac 则可以直接用终端，记得用管理员帐户进行连接。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715262_1608640548952.png" alt=""></p>
+<p>连接成功后输入以下代码：</p>
+<p>cd volume2/patch</p>
+<p>./ch_cpuinfo</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714635_1608640549367.png" alt=""></p>
+<p>然后按照提示选择 1.First run，继续输入 y 回车打补丁，运行结束后关闭 SSH，没有必要的话可以进群晖把 SSH 的勾选也去掉，安全起见。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715234_1608640549233.png" alt=""></p>
+<p>最后打开控制面板-信息中心，就可以看到真实的 CPU 信息了，温度也能实时显示。如果还没有显示，重启一遍 NAS 就会正常了，步骤其实满简单的，解决了强迫症。</p>
+<h1 id="正确识别-Nvme-固态硬盘"><a href="#正确识别-Nvme-固态硬盘" class="headerlink" title="正确识别 Nvme 固态硬盘"></a>正确识别 Nvme 固态硬盘</h1><p>其实 Nvme的固件补丁之前尝试过几个，但是都是针对稍低版本的，黑群晖 6.2.3 最新版是无法适用的，如果原先有 Nvme 固态成功还升级到 6.2.3 的话，还会导致 Nvme 丢失出现问题，因为此文已经是安装最新的 6.2.3版本，我就直接将最新的 Nvme 补丁装上去即可。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715246_1608640549379.png" alt=""></p>
+<p>最早的补丁发布应该是 Xpenology论坛上的大神提供的，的确厉害，国内都是从这获取的，有兴趣的可以去论坛看看：<a href="https://best.pconline.com.cn/ubb_load.jsp?url=5OeODZphIDtr8CidLA2yt2WE9vUcUX6HM%2BkL28qR2w5ZhsLj74tqhj16RhKksQglo046I6nhxWixSn08wmL2Kxkpk%2FlFYrWMB9x%2BvztNcw4%3D" target="_blank" rel="noopener">地址</a></p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714633_1608640549300.png" alt=""></p>
+<p>将 libsynonvme.so.1 拷贝到黑群晖的共享文件夹，比如和刚才 cpu 补丁同在的 patch 文件夹，然后一样的通过 ssh 进行连接 NAS。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714626_1608640549307.png" alt=""></p>
+<p>因为补丁打好忘记截图，我就用 mac 的终端模拟演示一下，windows 的 ssh 在上面CPU 正确显示时有演示，先用 admin 帐号和密码登陆。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714636_1608640549423.png" alt=""></p>
+<p>然后输入</p>
+<p>sudo -i</p>
+<p>密码也是 admin 密码，获得 root 权限。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715249_1608640553211.png" alt=""></p>
+<p>继续输入</p>
+<p>cd /usr/lib64</p>
+<p>cp /volume2/patch/libsynonvme.so.1 .</p>
+<p>注意上面一行最后的 1 后面有个空格，直接复制就好，第一步是打开 lib64 目录，因为这个目录在图形界面是看不到的，第二步是将libsynonvme.so.1 给拷贝过去，然后重启 NAS 就行了。</p>
+<p>如果有的人之前的黑群晖低版本打过 Nvme 补丁，但是升级 6.2.3 后失效了，也可以解决。</p>
+<p>首先是到控制面板删掉固态缓存</p>
+<p>删除旧版的补丁（以前的补丁是这个路径）</p>
+<p>rm -f /usr/local/etc/rc.d/libNVMEpatch.sh</p>
+<p>再重复刚才拷贝新的补丁到目录即可。</p>
+<p>如果不会 ssh 登陆的话，还有个图形界面的办法也可以搞定，就是在 windows下用 winscp 软件连接到黑群晖的根目录，直接拖曳上传，以下就顺便演示一下，因为之前我也碰到过 ssh 一直连接不到 NAS 的情况。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714628_1608640553187.png" alt=""></p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714638_1608640549331.png" alt=""></p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715239_1608640553118.png" alt=""></p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715254_1608640549254.png" alt=""></p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715263_1608640553226.png" alt=""></p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715248_1608640549298.png" alt=""></p>
+<p>打过旧补丁的会提示要替换，新安装就不需要了。</p>
+<h1 id="黑群晖配置-Nvme-缓存"><a href="#黑群晖配置-Nvme-缓存" class="headerlink" title="黑群晖配置 Nvme 缓存"></a>黑群晖配置 Nvme 缓存</h1><p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714630_1608640553213.png" alt=""></p>
+<p>打开黑群晖系统-存储空间管理员可以看到 256G 的 Nvme 固态硬盘完美识别，型号也正常。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714639_1608640549318.png" alt=""></p>
+<p>打开存储空间管理员-SSD 缓存-新增。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715276_1608640553635.png" alt=""></p>
+<p>因为只有一块硬盘，所以只能作为只读缓存，这也是华擎 H310CM-ITX/ac 遗憾的地方。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715256_1608640553146.png" alt=""></p>
+<p>勾选缓存设备，点击下一步。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715266_1608640553240.png" alt=""></p>
+<p>这里需要分配 SSD 缓存大小，256G 我建议分配 200G的空间，总之就是不要把空间最大值都填上，避免缓存写满了降速。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715250_1608640553305.png" alt=""></p>
+<p>勾选，继续点击确认。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714631_1608640553276.png" alt=""></p>
+<p>然后就是等待缓存装载了，要不了多久。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246714640_1608640553181.png" alt=""></p>
+<p>在装载NVME缓存的时候，你会看到群晖桌面的套件一个接一个的消失，过了一会，大家就神奇的一个个出现了，然后SSD只读缓存也就创建好了。</p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715241_1608640553141.png" alt=""></p>
+<p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715257_1608640553296.png" alt=""></p>
+<p>有时候会出现SSD 缓存损毁的状态，这个其实是大体积数据迁移的时候会出现，因为只有只读固态，从群晖往外拷贝几个 T 的数据，超过了 256G 的只读容量就会损毁了，但是一点也不用担心，数据也不会丢，重新启动一下 NAS，SSD 缓存就恢复了。正常使用过程中，很少有一次超过 256G 的数据迁移量。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><img data-src="//img.pconline.com.cn/images/upload/upc/tx/pc_best/2012/22/c261/246715271_1608640553593.png" alt=""></p>
+<p>硬盘建好后，在后台验证硬盘进行奇偶一致性校验很慢，想着等也是等，不如把数据都拷贝过来，结果拷贝数据的时候奇偶校验就停止了，那就干脆等拷贝完数据，再校验完后，再重启NAS吧，有些测试要重启看看情况，比如 CPU、Nvme补丁，以及重启后网卡丢不丢，顺便测试下网络唤醒等。</p>
+<p>我理想的黑群晖目前差不多也完成了，在 DSM7.0 到来之前，最新最稳定的 6.2.3 系统可以用很久了，CPU 正常显示，Nvme 固态缓存也让系统提速了不少，完全可以当主力 NAS 使用了。</p>
+<p>如果大家觉得这篇文章有帮助的话，欢迎点赞收藏评论转发，有问题大家一起探讨，可以让 NAS 的门槛越来越低，我也将持续分享一些群晖系统的使用技巧。</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/27474/" rel="bookmark">群晖docker换源</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/21868/" rel="bookmark">svn钩子hooks</a></div>
+    </li>
+  </ul>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%BE%A4%E6%99%96/" rel="tag"><i class="fa fa-tag"></i> 群晖</a>
+          </div>
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#打造完美黑群晖，最新-6-2-3-版本，正确显示-CPU，支持Nvme缓存，一步到位，养老NAS"><span class="nav-number">1.</span> <span class="nav-text">打造完美黑群晖，最新 6.2.3 版本，正确显示 CPU，支持Nvme缓存，一步到位，养老NAS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#制作系统-U-盘"><span class="nav-number">2.</span> <span class="nav-text">制作系统 U 盘</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装黑群晖系统"><span class="nav-number">3.</span> <span class="nav-text">安装黑群晖系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#显示真实的-CPU"><span class="nav-number">4.</span> <span class="nav-text">显示真实的 CPU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正确识别-Nvme-固态硬盘"><span class="nav-number">5.</span> <span class="nav-text">正确识别 Nvme 固态硬盘</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#黑群晖配置-Nvme-缓存"><span class="nav-number">6.</span> <span class="nav-text">黑群晖配置 Nvme 缓存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Fart"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Fart</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengbrute" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengbrute" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fengbrute@qq.com" title="E-Mail → mailto:fengbrute@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fengbrute" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fengbrute" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fart</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">155k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:29</span>
+</div>
+
+
+        
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              })
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=Cu5hv7V1QMPq7AdjyURssVXX-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : 'Cu5hv7V1QMPq7AdjyURssVXX-gzGzoHsz',
+            'X-LC-Key'    : 'toOnmwMBckjo5Jyi54jK5ejF',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('div.pdf').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/pdfobject@2/pdfobject.min.js', () => {
+    document.querySelectorAll('div.pdf').forEach(element => {
+      PDFObject.embed(element.getAttribute('target'), element, {
+        pdfOpenParams: {
+          navpanes : 0,
+          toolbar  : 0,
+          statusbar: 0,
+          pagemode : 'thumbs',
+          view     : 'FitH'
+        },
+        PDFJS_URL: '/lib/pdf/web/viewer.html',
+        height   : element.getAttribute('height') || '500px'
+      });
+    });
+  }, window.PDFObject);
+}
+</script>
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'dark',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Cu5hv7V1QMPq7AdjyURssVXX-gzGzoHsz',
+      appKey     : 'toOnmwMBckjo5Jyi54jK5ejF',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

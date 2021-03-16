@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.nasx.top","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="如何给群晖Nas的docker换个源提升镜像下载速度">
+<meta property="og:type" content="article">
+<meta property="og:title" content="群晖docker换源">
+<meta property="og:url" content="https://blog.nasx.top/posts/27474/index.html">
+<meta property="og:site_name" content="Fart">
+<meta property="og:description" content="如何给群晖Nas的docker换个源提升镜像下载速度">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qnam.smzdm.com/201911/23/5dd8fbe7a5bed4549.png_e680.jpg">
+<meta property="og:image" content="https://am.zdmimg.com/201911/23/5dd8fbe7a7c707972.png_e680.jpg">
+<meta property="og:image" content="https://qnam.smzdm.com/201911/23/5dd8fbe7aa17d311.png_e680.jpg">
+<meta property="og:image" content="https://qnam.smzdm.com/201911/23/5dd8fbe7a6c5660.png_e680.jpg">
+<meta property="og:image" content="https://qnam.smzdm.com/201911/23/5dd8fbe7b60154771.png_e680.jpg">
+<meta property="og:image" content="https://qnam.smzdm.com/201911/23/5dd8fbe7aab299378.png_e680.jpg">
+<meta property="og:image" content="https://qnam.smzdm.com/201911/23/5dd8fbe89b1c458.png_e680.jpg">
+<meta property="og:image" content="https://qnam.smzdm.com/201911/23/5dd8fbe8a31a36202.png_e680.jpg">
+<meta property="og:image" content="https://qnam.smzdm.com/201911/23/5dd8fbe99007e4428.png_e680.jpg">
+<meta property="og:image" content="https://qnam.smzdm.com/201911/23/5dd8fbe9be2f65008.png_e680.jpg">
+<meta property="og:image" content="https://qnam.smzdm.com/201911/23/5dd8fcc91c2962099.png_e680.jpg">
+<meta property="og:image" content="https://qnam.smzdm.com/201911/23/5dd8fbe9dcf5c9478.png_e680.jpg">
+<meta property="og:image" content="https://qnam.smzdm.com/201911/23/5dd8fc65d5df15865.png_e680.jpg">
+<meta property="article:published_time" content="2021-01-23T05:44:13.000Z">
+<meta property="article:modified_time" content="2021-01-23T05:44:13.000Z">
+<meta property="article:author" content="Fart">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="群晖">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qnam.smzdm.com/201911/23/5dd8fbe7a5bed4549.png_e680.jpg">
+
+<link rel="canonical" href="https://blog.nasx.top/posts/27474/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>群晖docker换源 | Fart</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fart</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/fengbrute" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.nasx.top/posts/27474/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Fart">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fart">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          群晖docker换源
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-23 13:44:13" itemprop="dateCreated datePublished" datetime="2021-01-23T13:44:13+08:00">2021-01-23</time>
+            </span>
+
+          
+            <span id="/posts/27474/" class="post-meta-item leancloud_visitors" data-flag-title="群晖docker换源" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/27474/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/27474/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="如何给群晖Nas的docker换个源提升镜像下载速度"><a href="#如何给群晖Nas的docker换个源提升镜像下载速度" class="headerlink" title="如何给群晖Nas的docker换个源提升镜像下载速度"></a>如何给群晖Nas的docker换个源提升镜像下载速度</h1><a id="more"></a>
+
+<p>2019-11-23 19:23:42 17点赞 172收藏 14评论</p>
+<blockquote>
+<p>是返乡过年？还是就地过年？最新一届<a href="https://www.smzdm.com/tag/tr0lj3l/post/" target="_blank" rel="noopener"><strong>#双面过节指南#</strong></a>开始啦！本次征稿活动分为A面返乡和B面就地，大家可以根据自己的情况，分享自己的春节攻略，优秀的投稿文章还有可能能获得优厚的大奖哦，<a href="https://post.smzdm.com/p/a6lxxn8o/" target="_blank" rel="noopener"><strong>快点击查看活动详情&lt;&lt;&lt;</strong></a></p>
+</blockquote>
+<p>之前有小伙伴问到下载dockers镜像时候出现速度慢或者失败的问题，本来觉得很简单没有必要出篇文来介绍，后来又有人问道，因为问多了可能真的有朋友还不知道方法，最后想想还是出篇文吧。</p>
+<p>其实下载的快慢很大因素和网络质量有关，也许是远程的也许是本地，总之我们先来解决远程的问题，本地话就要自己找原因咯。</p>
+<p>直接开始吧：</p>
+<p>1. 打开<strong>控制面板</strong>，找到<strong>终端机和SNMP</strong>设置项目</p>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_2/" target="_blank" rel="noopener"><img data-src="https://qnam.smzdm.com/201911/23/5dd8fbe7a5bed4549.png_e680.jpg" alt="终端机和SNMP"></a>终端机和SNMP</p>
+<p>2. 勾选SSH功能，这里强调一些，设置完成后一定要记得把它关掉。这算是一个危险操作。</p>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_3/" target="_blank" rel="noopener"><img data-src="https://am.zdmimg.com/201911/23/5dd8fbe7a7c707972.png_e680.jpg" alt="勾选ssh"></a>勾选ssh</p>
+<p>3. 我这里是Windows环境所以直接试用git的终端工具，这工具虽然一些命令很接近Linux的终端，但是还是非常不一样的。当然还有其他更好用工具，我就不一一介绍了。解决问题最简单的方式最好。</p>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_4/" target="_blank" rel="noopener"><img data-src="https://qnam.smzdm.com/201911/23/5dd8fbe7aa17d311.png_e680.jpg" alt="使用git的终端工具"></a>使用git的终端工具</p>
+<p>4. 使用以下命令进入你的Nas的终端环境</p>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_5/" target="_blank" rel="noopener"><img data-src="https://qnam.smzdm.com/201911/23/5dd8fbe7a6c5660.png_e680.jpg" alt="输入Nas账户相关"></a>输入Nas账户相关</p>
+<p>5. 如果你是第一次登录，你们请输入yes,将账户和访问信息保存到电脑上的.ssh<a href="https://www.smzdm.com/fenlei/wenjianjia/" target="_blank" rel="noopener">文件夹</a>中，后面会提示你输入password：也就是密码。（这里的账户密码都是你的Nas管理员群组的账号密码，另外输入密码时候是没有光标提示的，不是没反应，输入完回车就可以了）</p>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_6/" target="_blank" rel="noopener"><img data-src="https://qnam.smzdm.com/201911/23/5dd8fbe7b60154771.png_e680.jpg" alt="第一次连接需要确认"></a>第一次连接需要确认</p>
+<p>6. 获得root权限，输入以下命令</p>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_7/" target="_blank" rel="noopener"><img data-src="https://qnam.smzdm.com/201911/23/5dd8fbe7aab299378.png_e680.jpg" alt="一定要记得先拿权限"></a>一定要记得先拿权限</p>
+<p>7. 使用vim编辑器直接编辑docker的配置文件。输入以下命令：vi /var/packages/Docker/etc/dockerd.json</p>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_8/" target="_blank" rel="noopener"><img data-src="https://qnam.smzdm.com/201911/23/5dd8fbe89b1c458.png_e680.jpg" alt="直接编辑配置文件"></a>直接编辑配置文件</p>
+<p>下图这里是vim编辑器这里可能用得到的命令</p>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_9/" target="_blank" rel="noopener"><img data-src="https://qnam.smzdm.com/201911/23/5dd8fbe8a31a36202.png_e680.jpg" alt="其实Vim很强大"></a>其实Vim很强大</p>
+<p>8. 先用方向键将光标移动到“registry-mirrors”对应的中括号里边（如果你都会hjkl这样玩，当我没说），按I键插入编辑模式，输入以下网址的任意一个。按Esc键退出编辑模式，按双引号: 输入x 退出vim编辑器，其实已经保存了有些人习惯是wq其实也是一样的效果，写入退出的意思。</p>
+<p>首次进入时出现的样子</p>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_10/" target="_blank" rel="noopener"><img data-src="https://qnam.smzdm.com/201911/23/5dd8fbe99007e4428.png_e680.jpg" alt="未修改前"></a>未修改前</p>
+<p>修改过后出现的样子</p>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_11/" target="_blank" rel="noopener"><img data-src="https://qnam.smzdm.com/201911/23/5dd8fbe9be2f65008.png_e680.jpg" alt="修改后"></a>修改后</p>
+<p>如果出现了下图这个错误，就是你没有root权限来编辑这个配置文件，输入命令:e!推到原始状态，再输入:x退出文件编辑，重新执行步骤6的操作</p>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_12/" target="_blank" rel="noopener"><img data-src="https://qnam.smzdm.com/201911/23/5dd8fcc91c2962099.png_e680.jpg" alt="权限错误"></a>权限错误</p>
+<p>国内的镜像源地址：</p>
+<ul>
+<li><p>htt<a href="https://pinpai.smzdm.com/161140/" target="_blank" rel="noopener">ps</a></p>
+<p>  <a href="https://pinpai.smzdm.com/161140/" target="_blank" rel="noopener"></a></p>
+<p>  [</p>
+<p>  关注</p>
+<p>  ](<a href="https://pinpai.smzdm.com/161140/)[](javascript:;)" target="_blank" rel="noopener">https://pinpai.smzdm.com/161140/)[](javascript:;)</a></p>
+<p>  品牌 </p>
+<p>  粉丝：</p>
+<ul>
+<li><p>商品百科</p>
+</li>
+<li><p>好价</p>
+</li>
+<li><p>社区文章</p>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>://registry.docker-cn.com</code></pre><ul>
+<li><p><a href="http://hub-mirror.c.163.com" target="_blank" rel="noopener">http://hub-mirror.c.163.com</a></p>
+</li>
+<li><p><a href="https://3laho3y3.mirror.aliyuncs.com" target="_blank" rel="noopener">https://3laho3y3.mirror.aliyuncs.com</a></p>
+</li>
+<li><p><a href="http://f1361db2.m.daocloud.io" target="_blank" rel="noopener">http://f1361db2.m.daocloud.io</a></p>
+</li>
+<li><p><a href="https://mirror.ccs.tencentyun.com" target="_blank" rel="noopener">https://mirror.ccs.tencentyun.com</a></p>
+</li>
+</ul>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_13/" target="_blank" rel="noopener"><img data-src="https://qnam.smzdm.com/201911/23/5dd8fbe9dcf5c9478.png_e680.jpg" alt="国内镜像仓库"></a>国内镜像仓库</p>
+<p>9. 重新启动docker服务，既然都在终端了就终端直接重启，没必要回到<a href="https://pinpai.smzdm.com/2315/" target="_blank" rel="noopener">群晖</a></p>
+<p><a href="https://pinpai.smzdm.com/2315/" target="_blank" rel="noopener"></a></p>
+<p>[</p>
+<p>关注</p>
+<p>](<a href="https://pinpai.smzdm.com/2315/)[](javascript:;)" target="_blank" rel="noopener">https://pinpai.smzdm.com/2315/)[](javascript:;)</a></p>
+<p>品牌 </p>
+<p>粉丝：</p>
+<ul>
+<li><p>商品百科</p>
+</li>
+<li><p>好价</p>
+</li>
+<li><p>社区文章</p>
+</li>
+</ul>
+<p>的图形界面上去重启了。输入以下命令：synoservice –restart pkgctl-Docker  </p>
+<p><a href="https://post.smzdm.com/p/ag82opxd/pic_14/" target="_blank" rel="noopener"><img data-src="https://qnam.smzdm.com/201911/23/5dd8fc65d5df15865.png_e680.jpg" alt="重启docker命令"></a>重启docker命令</p>
+<p>10. 输入命令exit退出root权限，在输入命令exit结束终端<br>11. 进入控制面板把勾选的ssh功能取消的，保存应用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实没说明好特别去总结的，当然也有其他的方式，有很多小伙伴看到命令行的东西就直接吓退了，其实没有必要很多教程都没有把东西写明白告诉你什么意思，导致很多初阶玩家对这种东西很抗拒，其实弄明白命令的意思其实也就是那么回事。其实完全好比在Windows下面，进入一个文件夹下面打开一个文本文件，修改和增加一个网址就可以了。只不过在Linux下是以命令的方式去执行，<a href="https://www.smzdm.com/fenlei/jianpan/" target="_blank" rel="noopener">键盘</a>用得多<a href="https://www.smzdm.com/fenlei/shubiao/" target="_blank" rel="noopener">鼠标</a>用得少而已。</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/1317/" rel="bookmark">禅道升级</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/28166/" rel="bookmark">Ubuntu20安装docker</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/9879/" rel="bookmark">docker安装jenkins</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/27115/" rel="bookmark">群晖安装并修改cpu支援Nvme</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/posts/21868/" rel="bookmark">svn钩子hooks</a></div>
+    </li>
+  </ul>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"><i class="fa fa-tag"></i> docker</a>
+              <a href="/tags/%E7%BE%A4%E6%99%96/" rel="tag"><i class="fa fa-tag"></i> 群晖</a>
+          </div>
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何给群晖Nas的docker换个源提升镜像下载速度"><span class="nav-number">1.</span> <span class="nav-text">如何给群晖Nas的docker换个源提升镜像下载速度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.1.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Fart"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Fart</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengbrute" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengbrute" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fengbrute@qq.com" title="E-Mail → mailto:fengbrute@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fengbrute" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fengbrute" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fart</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">155k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:29</span>
+</div>
+
+
+        
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              })
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=Cu5hv7V1QMPq7AdjyURssVXX-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : 'Cu5hv7V1QMPq7AdjyURssVXX-gzGzoHsz',
+            'X-LC-Key'    : 'toOnmwMBckjo5Jyi54jK5ejF',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('div.pdf').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/pdfobject@2/pdfobject.min.js', () => {
+    document.querySelectorAll('div.pdf').forEach(element => {
+      PDFObject.embed(element.getAttribute('target'), element, {
+        pdfOpenParams: {
+          navpanes : 0,
+          toolbar  : 0,
+          statusbar: 0,
+          pagemode : 'thumbs',
+          view     : 'FitH'
+        },
+        PDFJS_URL: '/lib/pdf/web/viewer.html',
+        height   : element.getAttribute('height') || '500px'
+      });
+    });
+  }, window.PDFObject);
+}
+</script>
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'dark',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Cu5hv7V1QMPq7AdjyURssVXX-gzGzoHsz',
+      appKey     : 'toOnmwMBckjo5Jyi54jK5ejF',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

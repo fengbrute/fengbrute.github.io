@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.nasx.top","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="2021-01-31 周日  7:00本次更新内容服务端： 解决狼人杀推荐房间问题  客户端：无 更新步骤：  将线上狼人杀lb指向新服务器  将wolfc.h5eco.com的lb指向新的服务器  重定向wolfiner的指向  2021-01-30 星期六  9:00本次更新内容服务端： 新版本  客户端： 168新版本  更新步骤：  修改gv为168&amp;sv&#x3D;174  停服  更新服">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工作&#x2F;指上缤纷&#x2F;运维&#x2F;wolf">
+<meta property="og:url" content="https://blog.nasx.top/posts/op.wolf/index.html">
+<meta property="og:site_name" content="Fart">
+<meta property="og:description" content="2021-01-31 周日  7:00本次更新内容服务端： 解决狼人杀推荐房间问题  客户端：无 更新步骤：  将线上狼人杀lb指向新服务器  将wolfc.h5eco.com的lb指向新的服务器  重定向wolfiner的指向  2021-01-30 星期六  9:00本次更新内容服务端： 新版本  客户端： 168新版本  更新步骤：  修改gv为168&amp;sv&#x3D;174  停服  更新服">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-10T09:24:36.000Z">
+<meta property="article:modified_time" content="2020-02-10T09:24:36.000Z">
+<meta property="article:author" content="Fart">
+<meta property="article:tag" content="运维">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.nasx.top/posts/op.wolf/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>工作/指上缤纷/运维/wolf | Fart</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fart</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/fengbrute" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.nasx.top/posts/op.wolf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Fart">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fart">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          工作/指上缤纷/运维/wolf
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-10 17:24:36" itemprop="dateCreated datePublished" datetime="2020-02-10T17:24:36+08:00">2020-02-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E4%BD%9C/" itemprop="url" rel="index"><span itemprop="name">工作</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E4%BD%9C/%E6%8C%87%E4%B8%8A%E7%BC%A4%E7%BA%B7/" itemprop="url" rel="index"><span itemprop="name">指上缤纷</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E4%BD%9C/%E6%8C%87%E4%B8%8A%E7%BC%A4%E7%BA%B7/%E8%BF%90%E7%BB%B4/" itemprop="url" rel="index"><span itemprop="name">运维</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/posts/op.wolf/" class="post-meta-item leancloud_visitors" data-flag-title="工作/指上缤纷/运维/wolf" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/op.wolf/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/op.wolf/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>19 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="2021-01-31-周日-7-00"><a href="#2021-01-31-周日-7-00" class="headerlink" title="2021-01-31 周日  7:00"></a>2021-01-31 周日  7:00</h3><h4 id="本次更新内容"><a href="#本次更新内容" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端："><a href="#服务端：" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>解决狼人杀推荐房间问题</li>
+</ol>
+<h5 id="客户端："><a href="#客户端：" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="更新步骤："><a href="#更新步骤：" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input disabled="" type="checkbox"> 将线上狼人杀lb指向新服务器</li>
+<li><input disabled="" type="checkbox"> 将wolfc.h5eco.com的lb指向新的服务器</li>
+<li><input disabled="" type="checkbox"> 重定向wolfiner的指向</li>
+</ul>
+<h3 id="2021-01-30-星期六-9-00"><a href="#2021-01-30-星期六-9-00" class="headerlink" title="2021-01-30 星期六  9:00"></a>2021-01-30 星期六  9:00</h3><h4 id="本次更新内容-1"><a href="#本次更新内容-1" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-1"><a href="#服务端：-1" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>新版本</li>
+</ol>
+<h5 id="客户端：-1"><a href="#客户端：-1" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>168新版本</li>
+</ol>
+<h4 id="更新步骤：-1"><a href="#更新步骤：-1" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input disabled="" type="checkbox"> 修改gv为168&amp;sv=174</li>
+<li><input disabled="" type="checkbox"> 停服</li>
+<li><input disabled="" type="checkbox"> 更新服务器并且带上gv参数168白名单体验</li>
+<li><input disabled="" type="checkbox"> 解除gv白名单</li>
+<li><input disabled="" type="checkbox"> 发布新版本168</li>
+</ul>
+<h3 id="2020-12-30-星期三-10-00"><a href="#2020-12-30-星期三-10-00" class="headerlink" title="2020-12-30 星期三  10:00"></a>2020-12-30 星期三  10:00</h3><h4 id="本次更新内容-2"><a href="#本次更新内容-2" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-2"><a href="#服务端：-2" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>新版本</li>
+</ol>
+<h5 id="客户端：-2"><a href="#客户端：-2" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>165新版本</li>
+</ol>
+<h4 id="更新步骤：-2"><a href="#更新步骤：-2" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 关闭线上小游戏入口</li>
+<li><input checked="" disabled="" type="checkbox"> 修改gv为165&amp;sv=156</li>
+<li><input checked="" disabled="" type="checkbox"> 停服</li>
+<li><input checked="" disabled="" type="checkbox"> 更新服务器并且带上gv参数164白名单体验</li>
+<li><input checked="" disabled="" type="checkbox"> 解除gv白名单</li>
+<li><input checked="" disabled="" type="checkbox"> 发布新版本165</li>
+</ul>
+<h3 id="2020-12-21-星期一-10-50"><a href="#2020-12-21-星期一-10-50" class="headerlink" title="2020-12-21 星期一  10:50"></a>2020-12-21 星期一  10:50</h3><h4 id="本次更新内容-3"><a href="#本次更新内容-3" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-3"><a href="#服务端：-3" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>服务端新旧两种协议的支持</li>
+</ol>
+<h5 id="客户端：-3"><a href="#客户端：-3" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>164新版本</li>
+</ol>
+<h4 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h4><ol>
+<li>替换<code>/user/local/wolf</code>替换为<code>/user/local/wolf3</code></li>
+<li>修改redis配置文件</li>
+</ol>
+<h4 id="更新步骤：-3"><a href="#更新步骤：-3" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 关闭线上小游戏入口</li>
+<li><input checked="" disabled="" type="checkbox"> 修改gv为164&amp;sv=150</li>
+<li><input checked="" disabled="" type="checkbox"> 停服</li>
+<li><input checked="" disabled="" type="checkbox"> 更新服务器并且带上gv参数164白名单体验</li>
+<li><input checked="" disabled="" type="checkbox"> 解除gv白名单</li>
+<li><input checked="" disabled="" type="checkbox"> 发布新版本164</li>
+</ul>
+<h3 id="2020-12-04-星期五-14-15"><a href="#2020-12-04-星期五-14-15" class="headerlink" title="2020-12-04 星期五  14:15"></a>2020-12-04 星期五  14:15</h3><h4 id="本次更新内容-4"><a href="#本次更新内容-4" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-4"><a href="#服务端：-4" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>服务端切换了分支</li>
+<li></li>
+</ol>
+<h5 id="客户端：-4"><a href="#客户端：-4" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布162版本</li>
+</ol>
+<h4 id="准备工作：-1"><a href="#准备工作：-1" class="headerlink" title="准备工作："></a>准备工作：</h4><ol>
+<li>替换<code>/user/local/wolf</code>替换为<code>/user/local/wolf3</code></li>
+<li>修改redis配置文件</li>
+</ol>
+<h4 id="更新步骤：-4"><a href="#更新步骤：-4" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>sv</code>为136&amp;<code>gv</code>为159</li>
+<li><input checked="" disabled="" type="checkbox"> 停服</li>
+<li><input checked="" disabled="" type="checkbox"> 公众平台停版本</li>
+<li><input checked="" disabled="" type="checkbox"> 发布最159版本</li>
+</ul>
+<h3 id="2020-11-20-星期五-11-10"><a href="#2020-11-20-星期五-11-10" class="headerlink" title="2020-11-20 星期五  11:10"></a>2020-11-20 星期五  11:10</h3><h4 id="本次更新内容-5"><a href="#本次更新内容-5" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-5"><a href="#服务端：-5" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>切换redis</li>
+</ol>
+<h5 id="客户端：-5"><a href="#客户端：-5" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布新版本159</li>
+</ol>
+<h4 id="准备工作：-2"><a href="#准备工作：-2" class="headerlink" title="准备工作："></a>准备工作：</h4><ol>
+<li>停掉redis同步</li>
+<li>修改redis配置文件</li>
+</ol>
+<h4 id="更新步骤：-5"><a href="#更新步骤：-5" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>sv</code>为136&amp;<code>gv</code>为159</li>
+<li><input checked="" disabled="" type="checkbox"> 停服</li>
+<li><input checked="" disabled="" type="checkbox"> 公众平台停版本</li>
+<li><input checked="" disabled="" type="checkbox"> 发布最159版本</li>
+</ul>
+<h3 id="2020-11-13-星期五-3-00"><a href="#2020-11-13-星期五-3-00" class="headerlink" title="2020-11-13 星期五  3:00"></a>2020-11-13 星期五  3:00</h3><h4 id="本次更新内容-6"><a href="#本次更新内容-6" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-6"><a href="#服务端：-6" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>新版狼人杀发布</li>
+</ol>
+<h5 id="客户端：-6"><a href="#客户端：-6" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布新版本156</li>
+</ol>
+<h4 id="准备工作：-3"><a href="#准备工作：-3" class="headerlink" title="准备工作："></a>准备工作：</h4><ol>
+<li>去掉wolfc.h5eco.com的admin路由</li>
+</ol>
+<h3 id="2020-11-13-星期五-3-00-1"><a href="#2020-11-13-星期五-3-00-1" class="headerlink" title="2020-11-13 星期五  3:00"></a>2020-11-13 星期五  3:00</h3><h4 id="本次更新内容-7"><a href="#本次更新内容-7" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-7"><a href="#服务端：-7" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>新版狼人杀发布</li>
+</ol>
+<h5 id="客户端：-7"><a href="#客户端：-7" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布新版本156</li>
+</ol>
+<h4 id="准备工作：-4"><a href="#准备工作：-4" class="headerlink" title="准备工作："></a>准备工作：</h4><ol>
+<li>停审批服</li>
+<li>外网lb切换</li>
+<li>内网lv切换</li>
+<li>激活码url修改</li>
+<li>备份mysql</li>
+<li>备份redis</li>
+<li>提前准备新版脚本</li>
+<li>配置jdk11的环境</li>
+</ol>
+<h4 id="更新步骤：-6"><a href="#更新步骤：-6" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停服</li>
+<li><input checked="" disabled="" type="checkbox"> 公众平台停版本</li>
+<li><input checked="" disabled="" type="checkbox"> 配置jdk11</li>
+<li><input checked="" disabled="" type="checkbox"> 停止msyql备份任务</li>
+<li><input checked="" disabled="" type="checkbox"> 停止redis备份任务</li>
+<li><input checked="" disabled="" type="checkbox"> 切换外网lb</li>
+<li><input checked="" disabled="" type="checkbox"> 切换内网lb</li>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> 发布156版本</li>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>sv</code>为129&amp;<code>gv</code>为156</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+<li><input checked="" disabled="" type="checkbox"> master后台</li>
+</ul>
+<h3 id="2020-10-01-星期四-3-00"><a href="#2020-10-01-星期四-3-00" class="headerlink" title="2020-10-01 星期四  3:00"></a>2020-10-01 星期四  3:00</h3><h4 id="本次更新内容-8"><a href="#本次更新内容-8" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-8"><a href="#服务端：-8" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>后端配置文件</li>
+</ol>
+<h5 id="客户端：-8"><a href="#客户端：-8" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布新版本154</li>
+</ol>
+<h4 id="准备工作：-5"><a href="#准备工作：-5" class="headerlink" title="准备工作："></a>准备工作：</h4><ol>
+<li>停审批服</li>
+</ol>
+<h4 id="更新步骤：-7"><a href="#更新步骤：-7" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> 发布154版本</li>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>sv</code>为106&amp;<code>gv</code>为154</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-09-30-星期三-9-00"><a href="#2020-09-30-星期三-9-00" class="headerlink" title="2020-09-30 星期三  9:00"></a>2020-09-30 星期三  9:00</h3><h4 id="本次更新内容-9"><a href="#本次更新内容-9" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-9"><a href="#服务端：-9" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>后端配置文件</li>
+</ol>
+<h5 id="客户端：-9"><a href="#客户端：-9" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>前端配置文件</li>
+</ol>
+<h4 id="准备工作：-6"><a href="#准备工作：-6" class="headerlink" title="准备工作："></a>准备工作：</h4><ol>
+<li>停审批服</li>
+</ol>
+<h4 id="更新步骤：-8"><a href="#更新步骤：-8" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> 发布153版本</li>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>sv</code>为104&amp;<code>gv</code>为153</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-09-29-星期二-14-00"><a href="#2020-09-29-星期二-14-00" class="headerlink" title="2020-09-29 星期二   14:00"></a>2020-09-29 星期二   14:00</h3><h4 id="本次更新内容-10"><a href="#本次更新内容-10" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-10"><a href="#服务端：-10" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>十一活动</li>
+<li>视频代看</li>
+<li>其他</li>
+</ol>
+<h5 id="客户端：-10"><a href="#客户端：-10" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>视频代看</li>
+</ol>
+<h4 id="准备工作：-7"><a href="#准备工作：-7" class="headerlink" title="准备工作："></a>准备工作：</h4><ol>
+<li>停审批服</li>
+</ol>
+<h4 id="更新步骤：-9"><a href="#更新步骤：-9" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> 发布152版本</li>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>sv</code>为100&amp;<code>gv</code>为152</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-07-01-星期四-11-40"><a href="#2020-07-01-星期四-11-40" class="headerlink" title="2020-07-01 星期四   11:40"></a>2020-07-01 星期四   11:40</h3><h4 id="本次更新内容-11"><a href="#本次更新内容-11" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-11"><a href="#服务端：-11" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>替换<code>redis</code>链接</li>
+<li>修改五一活动时间配置</li>
+</ol>
+<h5 id="客户端：-11"><a href="#客户端：-11" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-8"><a href="#准备工作：-8" class="headerlink" title="准备工作："></a>准备工作：</h4><ol>
+<li><code>redis</code>数据迁移</li>
+<li>修改<code>redis</code>链接地址为最新的地址，等待重启生效</li>
+</ol>
+<h4 id="更新步骤：-10"><a href="#更新步骤：-10" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停掉包括<code>wolf</code>&amp;<code>wolfmaster</code>等所有用到旧<code>redis</code>的所有服务</li>
+<li><input checked="" disabled="" type="checkbox"> 完成<code>redis</code>数据迁移的增量同步</li>
+<li><input checked="" disabled="" type="checkbox"> 重启所有相关服务</li>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>sv</code></li>
+</ul>
+<h3 id="2020-06-18-星期四-10-13"><a href="#2020-06-18-星期四-10-13" class="headerlink" title="2020-06-18 星期四   10:13"></a>2020-06-18 星期四   10:13</h3><h4 id="本次更新内容-12"><a href="#本次更新内容-12" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-12"><a href="#服务端：-12" class="headerlink" title="服务端："></a>服务端：</h5><p>无</p>
+<h5 id="客户端：-12"><a href="#客户端：-12" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>修复家族聊天不显示头像&amp;昵称问题</li>
+</ol>
+<h4 id="准备工作：-9"><a href="#准备工作：-9" class="headerlink" title="准备工作："></a>准备工作：</h4><p>无</p>
+<h4 id="更新步骤：-11"><a href="#更新步骤：-11" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>gv</code>为<code>146</code></li>
+<li><input checked="" disabled="" type="checkbox"> 发布<code>146</code>版本</li>
+</ul>
+<h3 id="2020-06-17-星期三-10-20"><a href="#2020-06-17-星期三-10-20" class="headerlink" title="2020-06-17 星期三   10:20"></a>2020-06-17 星期三   10:20</h3><h3 id="本次更新内容-13"><a href="#本次更新内容-13" class="headerlink" title="本次更新内容"></a>本次更新内容</h3><h4 id="本次更新内容-14"><a href="#本次更新内容-14" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-13"><a href="#服务端：-13" class="headerlink" title="服务端："></a>服务端：</h5><p>无</p>
+<h5 id="客户端：-13"><a href="#客户端：-13" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>优化好友&amp;家族聊天卡顿问题</li>
+</ol>
+<h4 id="准备工作：-10"><a href="#准备工作：-10" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发布公告</li>
+</ul>
+<h4 id="更新步骤：-12"><a href="#更新步骤：-12" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>gv</code>为<code>145</code></li>
+<li><input checked="" disabled="" type="checkbox"> 发布<code>145</code>版本</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-05-14-星期四-10-00"><a href="#2020-05-14-星期四-10-00" class="headerlink" title="2020-05-14 星期四   10:00"></a>2020-05-14 星期四   10:00</h3><h3 id="本次更新内容-15"><a href="#本次更新内容-15" class="headerlink" title="本次更新内容"></a>本次更新内容</h3><h4 id="本次更新内容-16"><a href="#本次更新内容-16" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-14"><a href="#服务端：-14" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>好友名称备注功能  </li>
+<li>牌桌内回复好友消息，创建房间和房间设置增加好友消息回复开关 </li>
+<li>个人战绩开关，个人主页查看战绩 </li>
+<li>修改家族名称 </li>
+<li>牌桌内邀请好友改为好友消息发送</li>
+</ol>
+<h5 id="客户端：-14"><a href="#客户端：-14" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布<code>140</code>版本</li>
+<li>好友名称备注功能  </li>
+<li>牌桌内回复好友消息，创建房间和房间设置增加好友消息回复开关 </li>
+<li>个人战绩开关，个人主页查看战绩 </li>
+<li>修改家族名称 </li>
+<li>牌桌内邀请好友改为好友消息发送</li>
+</ol>
+<h4 id="准备工作：-11"><a href="#准备工作：-11" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发布公告</li>
+</ul>
+<h4 id="更新步骤：-13"><a href="#更新步骤：-13" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>sv</code>为<code>88</code>&amp;<code>gv</code>为<code>140</code></li>
+<li><input checked="" disabled="" type="checkbox"> 发布<code>140</code>版本</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-05-08-星期五-06-31"><a href="#2020-05-08-星期五-06-31" class="headerlink" title="2020-05-08 星期五   06:31"></a>2020-05-08 星期五   06:31</h3><h4 id="本次更新内容-17"><a href="#本次更新内容-17" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-15"><a href="#服务端：-15" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>关闭世界聊天入口</li>
+</ol>
+<h5 id="客户端：-15"><a href="#客户端：-15" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>屏蔽语音房间入口</li>
+<li>屏蔽世界聊天入口以及展示</li>
+<li>去除五一活动<code>banner</code></li>
+</ol>
+<h4 id="准备工作：-12"><a href="#准备工作：-12" class="headerlink" title="准备工作："></a>准备工作：</h4><p>​    无</p>
+<h4 id="更新步骤：-14"><a href="#更新步骤：-14" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-04-30-星期四-10-20"><a href="#2020-04-30-星期四-10-20" class="headerlink" title="2020-04-30 星期四   10:20"></a>2020-04-30 星期四   10:20</h3><h4 id="本次更新内容-18"><a href="#本次更新内容-18" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-16"><a href="#服务端：-16" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>新增五一活动</li>
+<li>牌桌中增加了家族邀请</li>
+<li>牌桌中文字开关</li>
+</ol>
+<h5 id="客户端：-16"><a href="#客户端：-16" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布<code>136</code>版本</li>
+<li>语音房间显示房主家族</li>
+<li>语音房间成员管理</li>
+<li>家族聊天页面房间要求链接</li>
+<li>家族联调显示职位</li>
+<li>免费金币重做</li>
+<li>成为恋人公告</li>
+</ol>
+<h4 id="准备工作：-13"><a href="#准备工作：-13" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发布公告</li>
+</ul>
+<h4 id="更新步骤：-15"><a href="#更新步骤：-15" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> 发布136版本</li>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>sv</code>为<code>81</code>&amp;<code>gv</code>为<code>136</code></li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-04-17-星期五-10-20"><a href="#2020-04-17-星期五-10-20" class="headerlink" title="2020-04-17 星期五   10:20"></a>2020-04-17 星期五   10:20</h3><h4 id="本次更新内容-19"><a href="#本次更新内容-19" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-17"><a href="#服务端：-17" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>家族无法删除成员<code>bug</code></li>
+<li>语音房pk时语音按钮问题</li>
+</ol>
+<h5 id="客户端：-17"><a href="#客户端：-17" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布<code>135</code>版本</li>
+<li>手机上平台，关闭喇叭后，点home键，再回来，喇叭显示关闭，但是玩家的声音能听到了</li>
+<li>家族宝箱开启不了</li>
+<li>同时多人投票，pk特效位置偏移</li>
+<li>优化换位置以及观战玩家坐下，新玩家进入游戏，头像抖动</li>
+<li>结算的首胜弹窗</li>
+</ol>
+<h4 id="准备工作：-14"><a href="#准备工作：-14" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发布公告</li>
+</ul>
+<h4 id="更新步骤：-16"><a href="#更新步骤：-16" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> 发布135版本</li>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>sv</code>为<code>72</code>&amp;<code>gv</code>为<code>135</code></li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-04-15-星期三-11-47"><a href="#2020-04-15-星期三-11-47" class="headerlink" title="2020-04-15 星期三   11:47"></a>2020-04-15 星期三   11:47</h3><h4 id="本次更新内容-20"><a href="#本次更新内容-20" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-18"><a href="#服务端：-18" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>兼容<code>orgCmd</code>的<code>playerData</code>为<code>null</code>的报错</li>
+</ol>
+<h5 id="客户端：-18"><a href="#客户端：-18" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>无</li>
+</ol>
+<h4 id="准备工作：-15"><a href="#准备工作：-15" class="headerlink" title="准备工作："></a>准备工作：</h4><p>无</p>
+<h4 id="更新步骤：-17"><a href="#更新步骤：-17" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-04-15-星期三-11-40"><a href="#2020-04-15-星期三-11-40" class="headerlink" title="2020-04-15 星期三   11:40"></a>2020-04-15 星期三   11:40</h3><h4 id="本次更新内容-21"><a href="#本次更新内容-21" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-19"><a href="#服务端：-19" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>新增语音房间小游戏</li>
+<li>角色家族信息添加</li>
+</ol>
+<h5 id="客户端：-19"><a href="#客户端：-19" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布<code>134</code>版本</li>
+<li>新增语音房小游戏</li>
+<li>家族排行榜</li>
+</ol>
+<h4 id="准备工作：-16"><a href="#准备工作：-16" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发公告</li>
+</ul>
+<h4 id="更新步骤：-18"><a href="#更新步骤：-18" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> 发布134版本</li>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>sv</code>为<code>70</code>&amp;<code>gv</code>为<code>134</code></li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-04-09-星期四-07-00"><a href="#2020-04-09-星期四-07-00" class="headerlink" title="2020-04-09 星期四   07:00"></a>2020-04-09 星期四   07:00</h3><h4 id="本次更新内容-22"><a href="#本次更新内容-22" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-20"><a href="#服务端：-20" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>修复无法新建家族<code>bug</code></li>
+<li>修改<code>org</code>库无法存表情<code>bug</code></li>
+</ol>
+<h5 id="客户端：-20"><a href="#客户端：-20" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-17"><a href="#准备工作：-17" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发公告</li>
+</ul>
+<h4 id="更新步骤：-19"><a href="#更新步骤：-19" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>sv</code>为63</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-04-08-星期三-07-00"><a href="#2020-04-08-星期三-07-00" class="headerlink" title="2020-04-08 星期三  07:00"></a>2020-04-08 星期三  07:00</h3><h4 id="本次更新内容-23"><a href="#本次更新内容-23" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-21"><a href="#服务端：-21" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>家族系统</li>
+</ol>
+<h5 id="客户端：-21"><a href="#客户端：-21" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>家族系统</li>
+</ol>
+<h4 id="准备工作：-18"><a href="#准备工作：-18" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发公告</li>
+</ul>
+<h4 id="更新步骤：-20"><a href="#更新步骤：-20" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停体验服</li>
+<li><input checked="" disabled="" type="checkbox"> 更新<code>gv</code>为133，<code>sv</code>为62</li>
+<li><input checked="" disabled="" type="checkbox"> 发布133</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-04-04-星期三-00-00"><a href="#2020-04-04-星期三-00-00" class="headerlink" title="2020-04-04 星期三  00:00"></a>2020-04-04 星期三  00:00</h3><h4 id="本次更新内容-24"><a href="#本次更新内容-24" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-22"><a href="#服务端：-22" class="headerlink" title="服务端："></a>服务端：</h5><p>全国哀悼日，停服</p>
+<h5 id="客户端：-22"><a href="#客户端：-22" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-19"><a href="#准备工作：-19" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发公告</li>
+</ul>
+<h4 id="更新步骤：-21"><a href="#更新步骤：-21" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停服</li>
+</ul>
+<h3 id="2020-04-01-星期三-7-00"><a href="#2020-04-01-星期三-7-00" class="headerlink" title="2020-04-01 星期三  7:00"></a>2020-04-01 星期三  7:00</h3><h4 id="本次更新内容-25"><a href="#本次更新内容-25" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-23"><a href="#服务端：-23" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>调整统计注册逻辑</li>
+<li>增加金币消费log</li>
+</ol>
+<h5 id="客户端：-23"><a href="#客户端：-23" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-20"><a href="#准备工作：-20" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发公告</li>
+</ul>
+<h4 id="更新步骤：-22"><a href="#更新步骤：-22" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-03-28-星期六-7-00"><a href="#2020-03-28-星期六-7-00" class="headerlink" title="2020-03-28 星期六  7:00"></a>2020-03-28 星期六  7:00</h3><h4 id="本次更新内容-26"><a href="#本次更新内容-26" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-24"><a href="#服务端：-24" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>gv加速</li>
+</ol>
+<h5 id="客户端：-24"><a href="#客户端：-24" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-21"><a href="#准备工作：-21" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发公告</li>
+</ul>
+<h4 id="更新步骤：-23"><a href="#更新步骤：-23" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <code>dump</code>内存<code>jmap -histo:live pid &gt; /data/jmap_20200328.txt</code></li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-03-27-星期五-7-00"><a href="#2020-03-27-星期五-7-00" class="headerlink" title="2020-03-27 星期五  7:00"></a>2020-03-27 星期五  7:00</h3><h4 id="本次更新内容-27"><a href="#本次更新内容-27" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-25"><a href="#服务端：-25" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>兼容房间内<code>playerdata</code>为<code>null</code>的报错</li>
+<li>修复服务端一直bug</li>
+</ol>
+<h5 id="客户端：-25"><a href="#客户端：-25" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-22"><a href="#准备工作：-22" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发公告</li>
+</ul>
+<h4 id="更新步骤：-24"><a href="#更新步骤：-24" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <code>dump</code>内存<code>jmap -histo:live pid &gt; /data/jmap_20200327.txt</code></li>
+<li><input checked="" disabled="" type="checkbox"> sv更新到56</li>
+<li><input checked="" disabled="" type="checkbox"> 停掉上个版本的游戏进程</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-03-26-星期四-16-25"><a href="#2020-03-26-星期四-16-25" class="headerlink" title="2020-03-26 星期四  16:25"></a>2020-03-26 星期四  16:25</h3><h4 id="本次更新内容-28"><a href="#本次更新内容-28" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-26"><a href="#服务端：-26" class="headerlink" title="服务端："></a>服务端：</h5><p>无</p>
+<h5 id="客户端：-26"><a href="#客户端：-26" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>更新客户端版本到130</li>
+<li>新增用户登陆行为统计</li>
+</ol>
+<h4 id="准备工作：-23"><a href="#准备工作：-23" class="headerlink" title="准备工作："></a>准备工作：</h4><p>无</p>
+<h4 id="更新步骤：-25"><a href="#更新步骤：-25" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停掉审批服</li>
+<li><input checked="" disabled="" type="checkbox"> gv设置为130</li>
+</ul>
+<h3 id="2020-03-26-星期四-7-25"><a href="#2020-03-26-星期四-7-25" class="headerlink" title="2020-03-26 星期四  7:25"></a>2020-03-26 星期四  7:25</h3><h4 id="本次更新内容-29"><a href="#本次更新内容-29" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-27"><a href="#服务端：-27" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>版本回退</li>
+</ol>
+<h5 id="客户端：-27"><a href="#客户端：-27" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-24"><a href="#准备工作：-24" class="headerlink" title="准备工作："></a>准备工作：</h4><p>无</p>
+<h4 id="更新步骤：-26"><a href="#更新步骤：-26" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> sv回退到54</li>
+<li><input checked="" disabled="" type="checkbox"> 停掉上个版本的游戏进程</li>
+<li><input checked="" disabled="" type="checkbox"> 重启旧包</li>
+</ul>
+<h3 id="2020-03-26-星期四-7-00"><a href="#2020-03-26-星期四-7-00" class="headerlink" title="2020-03-26 星期四  7:00"></a>2020-03-26 星期四  7:00</h3><h4 id="本次更新内容-30"><a href="#本次更新内容-30" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-28"><a href="#服务端：-28" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>兼容房间内<code>playerdata</code>为<code>null</code>的报错</li>
+<li>修复服务端一直bug</li>
+</ol>
+<h5 id="客户端：-28"><a href="#客户端：-28" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-25"><a href="#准备工作：-25" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发公告</li>
+</ul>
+<h4 id="更新步骤：-27"><a href="#更新步骤：-27" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <code>dump</code>内存<code>jmap -dump:format=b,file=/data/heapdump_20200326.bin $pid</code></li>
+<li><input checked="" disabled="" type="checkbox"> sv更新到56</li>
+<li><input checked="" disabled="" type="checkbox"> 停掉上个版本的游戏进程</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-03-25-星期三-8-15"><a href="#2020-03-25-星期三-8-15" class="headerlink" title="2020-03-25 星期三  8:15"></a>2020-03-25 星期三  8:15</h3><h4 id="本次更新内容-31"><a href="#本次更新内容-31" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-29"><a href="#服务端：-29" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>版本回退</li>
+</ol>
+<h5 id="客户端：-29"><a href="#客户端：-29" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-26"><a href="#准备工作：-26" class="headerlink" title="准备工作："></a>准备工作：</h4><p>无</p>
+<h4 id="更新步骤：-28"><a href="#更新步骤：-28" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <code>dump</code>内存<code>jmap -dump:format=b,file=/data/heapdump_20200325_1.bin $pid</code></li>
+<li><input checked="" disabled="" type="checkbox"> sv回退到54</li>
+<li><input checked="" disabled="" type="checkbox"> 停服</li>
+<li><input checked="" disabled="" type="checkbox"> 启动上个包</li>
+</ul>
+<h3 id="2020-03-25-星期三-7-00"><a href="#2020-03-25-星期三-7-00" class="headerlink" title="2020-03-25 星期三  7:00"></a>2020-03-25 星期三  7:00</h3><h4 id="本次更新内容-32"><a href="#本次更新内容-32" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-30"><a href="#服务端：-30" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>修复已知bug</li>
+<li>添加更详细的报错log</li>
+<li>部分模块儿优化</li>
+</ol>
+<h5 id="客户端：-30"><a href="#客户端：-30" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-27"><a href="#准备工作：-27" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <del>发公告</del></li>
+</ul>
+<h4 id="更新步骤：-29"><a href="#更新步骤：-29" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> <code>dump</code>内存<code>jmap -dump:format=b,file=/data/heapdump_20200325.bin $pid</code></li>
+<li><input checked="" disabled="" type="checkbox"> 更新sv到55</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-03-24-星期二-17-13"><a href="#2020-03-24-星期二-17-13" class="headerlink" title="2020-03-24 星期二  17:13"></a>2020-03-24 星期二  17:13</h3><h4 id="本次更新内容-33"><a href="#本次更新内容-33" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-31"><a href="#服务端：-31" class="headerlink" title="服务端："></a>服务端：</h5><p>无</p>
+<h5 id="客户端：-31"><a href="#客户端：-31" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布新版本129</li>
+<li>修复ios无背景图问题</li>
+<li>修复无法切换房间类型问题</li>
+</ol>
+<h4 id="准备工作：-28"><a href="#准备工作：-28" class="headerlink" title="准备工作："></a>准备工作：</h4><p>无</p>
+<h4 id="更新步骤：-30"><a href="#更新步骤：-30" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> 发布129版本</li>
+<li><input checked="" disabled="" type="checkbox"> 更新gv到129</li>
+</ul>
+<h3 id="2020-03-24-星期二-10-00"><a href="#2020-03-24-星期二-10-00" class="headerlink" title="2020-03-24 星期二 10:00"></a>2020-03-24 星期二 10:00</h3><h4 id="本次更新内容-34"><a href="#本次更新内容-34" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-32"><a href="#服务端：-32" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>已知<code>bug</code>容错</li>
+<li>语音房间</li>
+<li>送礼商城</li>
+</ol>
+<h5 id="客户端：-32"><a href="#客户端：-32" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布新版本128</li>
+<li>语音房间</li>
+<li>送礼商城</li>
+</ol>
+<h4 id="准备工作：-29"><a href="#准备工作：-29" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <del>发公告</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>检查代码</del></li>
+</ul>
+<h4 id="更新步骤：-31"><a href="#更新步骤：-31" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> 发布128版本</li>
+<li><input checked="" disabled="" type="checkbox"> 更新gv到128，sv为54</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-03-21-星期五-7-00"><a href="#2020-03-21-星期五-7-00" class="headerlink" title="2020-03-21 星期五 7:00"></a>2020-03-21 星期五 7:00</h3><h4 id="本次更新内容-35"><a href="#本次更新内容-35" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-33"><a href="#服务端：-33" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>已知<code>bug</code>容错</li>
+<li>微信统计</li>
+</ol>
+<h5 id="客户端：-33"><a href="#客户端：-33" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-30"><a href="#准备工作：-30" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <del>发公告</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>检查代码</del></li>
+</ul>
+<h4 id="更新步骤：-32"><a href="#更新步骤：-32" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <code>dump</code>内存<code>jmap -dump:format=b,file=/data/heapdump_20200321.bin $pid</code></li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-03-20-星期五-10-00"><a href="#2020-03-20-星期五-10-00" class="headerlink" title="2020-03-20 星期五 10:00"></a>2020-03-20 星期五 10:00</h3><h4 id="本次更新内容-36"><a href="#本次更新内容-36" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-34"><a href="#服务端：-34" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>已知<code>bug</code>容错</li>
+<li>微信统计</li>
+</ol>
+<h5 id="客户端：-34"><a href="#客户端：-34" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>微信统计</li>
+</ol>
+<h4 id="准备工作：-31"><a href="#准备工作：-31" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <del>发公告</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>检查代码</del></li>
+</ul>
+<h4 id="更新步骤：-33"><a href="#更新步骤：-33" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <code>dump</code>内存<code>jmap -dump:format=b,file=/data/heapdump_20200319.bin $pid</code></li>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>gv</code>为124</li>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>sv</code>为49</li>
+<li><input checked="" disabled="" type="checkbox"> 发布客户端版本</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-03-19-星期四-9-00"><a href="#2020-03-19-星期四-9-00" class="headerlink" title="2020-03-19 星期四 9:00"></a>2020-03-19 星期四 9:00</h3><h4 id="本次更新内容-37"><a href="#本次更新内容-37" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-35"><a href="#服务端：-35" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>已知<code>bug</code>容错</li>
+<li>主页显示恋人</li>
+</ol>
+<h5 id="客户端：-35"><a href="#客户端：-35" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布客户端124版本</li>
+<li>主页显示恋人</li>
+</ol>
+<h4 id="准备工作：-32"><a href="#准备工作：-32" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <del>发公告</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>检查代码</del></li>
+</ul>
+<h4 id="更新步骤：-34"><a href="#更新步骤：-34" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <code>dump</code>内存<code>jmap -dump:format=b,file=/data/heapdump_20200319.bin $pid</code></li>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>gv</code>为124</li>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>sv</code>为49</li>
+<li><input checked="" disabled="" type="checkbox"> 发布客户端版本</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-03-18-星期三-11-00"><a href="#2020-03-18-星期三-11-00" class="headerlink" title="2020-03-18 星期三 11:00"></a>2020-03-18 星期三 11:00</h3><h4 id="本次更新内容-38"><a href="#本次更新内容-38" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-36"><a href="#服务端：-36" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>狼人杀10人混血儿玩法模式</li>
+<li>CP功能</li>
+<li>世界聊天</li>
+</ol>
+<h5 id="客户端：-36"><a href="#客户端：-36" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>发布客户端123版本</li>
+<li>修改配置加载机制，转为json加载而非程序csv</li>
+<li>狼人杀10人混血儿玩法模式</li>
+<li>CP功能</li>
+<li>世界聊天</li>
+</ol>
+<h4 id="准备工作：-33"><a href="#准备工作：-33" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <del>发公告</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>检查代码</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>添加家族数据库</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>解决<code>game.properties</code>配置冲突</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>停掉审批服</del></li>
+</ul>
+<h4 id="更新步骤：-35"><a href="#更新步骤：-35" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <code>dump</code>内存<code>jmap -dump:format=b,file=/data/heapdump_20200318.bin $pid</code></li>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>gv</code>为123</li>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>sv</code>为46</li>
+<li><input checked="" disabled="" type="checkbox"> 发布客户端版本</li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+<li><input checked="" disabled="" type="checkbox"> 发补偿邮件</li>
+</ul>
+<h3 id="2020-03-16-星期一-4-30"><a href="#2020-03-16-星期一-4-30" class="headerlink" title="2020-03-16 星期一 4:30"></a>2020-03-16 星期一 4:30</h3><h4 id="本次更新内容-39"><a href="#本次更新内容-39" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-37"><a href="#服务端：-37" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>修复落地登陆后有可能好友列表丢失问题</li>
+<li>优化落地速度</li>
+</ol>
+<h5 id="客户端：-37"><a href="#客户端：-37" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-34"><a href="#准备工作：-34" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <del>发公告</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>检查代码</del></li>
+</ul>
+<h4 id="更新步骤：-36"><a href="#更新步骤：-36" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <code>wolf3</code>上内存快照<code>jmap -histo:live pid &gt; /data/jmap_20200316.txt</code></li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+<li><input checked="" disabled="" type="checkbox"> 发补偿邮件</li>
+</ul>
+<h3 id="2020-03-11-星期三-7-30"><a href="#2020-03-11-星期三-7-30" class="headerlink" title="2020-03-11 星期三 7:30"></a>2020-03-11 星期三 7:30</h3><h4 id="本次更新内容-40"><a href="#本次更新内容-40" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-38"><a href="#服务端：-38" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>为了检测玩家未触发<code>close</code>事件</li>
+<li>修复落地登陆后未查看邮件的玩家的邮件列表丢失</li>
+<li>优化落地速度</li>
+</ol>
+<h5 id="客户端：-38"><a href="#客户端：-38" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-35"><a href="#准备工作：-35" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <del>发公告</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>检查代码</del></li>
+</ul>
+<h4 id="更新步骤：-37"><a href="#更新步骤：-37" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <del><code>wolf3</code>上内存快照<code>jmap -histo:live pid &gt; /data/jmap_20200311.txt</code></del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>执行更新脚本</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>发补偿邮件</del></li>
+</ul>
+<h3 id="2020-03-10-星期二-7-30"><a href="#2020-03-10-星期二-7-30" class="headerlink" title="2020-03-10 星期二 7:30"></a>2020-03-10 星期二 7:30</h3><h4 id="本次更新内容-41"><a href="#本次更新内容-41" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-39"><a href="#服务端：-39" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>更换新服务器，更新系统至<code>centos7.6</code>更新最新的补丁</li>
+<li>好友模块废玩家数据兼容</li>
+<li><code>sessionUser</code>断线机制优化</li>
+<li>加速玩家登陆和初始化速度</li>
+<li>玩家牌桌内掉线又恰巧数据被落地的后续兼容</li>
+</ol>
+<h5 id="客户端：-39"><a href="#客户端：-39" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-36"><a href="#准备工作：-36" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <del>发公告</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>检查代码</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>新增狼人杀<code>tcp</code>的<code>lb</code>配置</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>将域名<code>wolfg.h5eco.com</code>的<code>A</code>记录由之前的服务器<code>ip</code>改为<code>lb</code>的<code>vip</code></del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>新服务器系统安装&amp;环境检查</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>修改<code>redis</code>线程池</del></li>
+</ul>
+<h4 id="更新步骤：-38"><a href="#更新步骤：-38" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <del>启动<code>wolf3</code>游戏进程（一定要再早上5点后！避免双服务落地导致在线判断有误）</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del><code>wolf2</code>上内存快照<code>jmap -histo:live pid &gt; /data/jmap_20200310.txt</code></del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>停服<code>wolf2</code>上游戏进程</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>狼人杀<code>tcp</code>的<code>lb</code>绑定换成新服务器<code>wolf3</code></del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>换绑<code>wolfc.h5eco.com</code>的绑定为<code>wolf3</code></del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>换绑<code>100.119.167.14</code>的绑定为<code>wolf3</code></del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>将域名<code>wolfg.h5eco.com</code>的<code>A</code>记录的由之前的<code>lb</code>改为<code>wolf3</code>的<code>ip</code></del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>发补偿邮件</del></li>
+<li><input checked="" disabled="" type="checkbox"> <del>更新<code>wolfapply2</code>上的游戏监控</del></li>
+</ul>
+<h3 id="2020-03-04-星期三-7-30"><a href="#2020-03-04-星期三-7-30" class="headerlink" title="2020-03-04 星期三 7:30"></a>2020-03-04 星期三 7:30</h3><h4 id="本次更新内容-42"><a href="#本次更新内容-42" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-40"><a href="#服务端：-40" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>修复落地后<code>tell</code>模块查表错误</li>
+</ol>
+<h5 id="客户端：-40"><a href="#客户端：-40" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-37"><a href="#准备工作：-37" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发公告</li>
+<li><input checked="" disabled="" type="checkbox"> 提交相关代码</li>
+</ul>
+<h4 id="更新步骤：-39"><a href="#更新步骤：-39" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 内存快照<code>jmap -histo:live pid &gt; /data/jmap_20200304.txt</code></li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+<li><input checked="" disabled="" type="checkbox"> 发补偿邮件</li>
+</ul>
+<h3 id="2020-03-03-星期二-7-30"><a href="#2020-03-03-星期二-7-30" class="headerlink" title="2020-03-03 星期二 7:30"></a>2020-03-03 星期二 7:30</h3><h4 id="本次更新内容-43"><a href="#本次更新内容-43" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-41"><a href="#服务端：-41" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>新版本落地（分表落地）</li>
+<li>修改邮件初始化红点</li>
+<li>统计日志用<code>worker</code>线程</li>
+</ol>
+<h5 id="客户端：-41"><a href="#客户端：-41" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-38"><a href="#准备工作：-38" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发布维护公告</li>
+<li><input checked="" disabled="" type="checkbox"> 同步最新的<code>mysql</code>到新数据库</li>
+<li><input checked="" disabled="" type="checkbox"> 跑最新的建表语句</li>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>game.properties</code>中<code>mysql</code>数据库的配置</li>
+<li><input checked="" disabled="" type="checkbox"> 恢复落地线程数为<code>cpu</code>核心数除2</li>
+<li><input checked="" disabled="" type="checkbox"> 将线上所有<code>save</code>的<code>uid</code>导入3月2号的清理队列中</li>
+<li><input checked="" disabled="" type="checkbox"> 将之前压测服链的<code>game.properties</code>中的<code>mysql</code>数据库配置去掉&amp;去除<code>mysql</code>能力</li>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>wolfmaste</code>r服务器配置的<code>mysql</code>配置</li>
+<li><input checked="" disabled="" type="checkbox"> 重启<code>wolfmaster</code>服务</li>
+</ul>
+<h4 id="更新步骤：-40"><a href="#更新步骤：-40" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>log4j2</code>配置，将统计<code>log</code>分离出来</li>
+<li><input checked="" disabled="" type="checkbox"> 内存快照<code>jmap -histo:live pid &gt; /data/jmap_20200303.txt</code></li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+<li><input checked="" disabled="" type="checkbox"> 发补偿邮件</li>
+</ul>
+<h3 id="2020-02-27-星期四-7-43"><a href="#2020-02-27-星期四-7-43" class="headerlink" title="2020-02-27 星期四 7:43"></a>2020-02-27 星期四 7:43</h3><h4 id="本次更新内容-44"><a href="#本次更新内容-44" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-42"><a href="#服务端：-42" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>修正<code>playerData</code>为null的报错；</li>
+</ol>
+<h5 id="客户端：-42"><a href="#客户端：-42" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-39"><a href="#准备工作：-39" class="headerlink" title="准备工作："></a>准备工作：</h4><p>无</p>
+<h4 id="更新步骤：-41"><a href="#更新步骤：-41" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-02-27-星期四-7-30"><a href="#2020-02-27-星期四-7-30" class="headerlink" title="2020-02-27 星期四 7:30"></a>2020-02-27 星期四 7:30</h3><h4 id="本次更新内容-45"><a href="#本次更新内容-45" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务端：-43"><a href="#服务端：-43" class="headerlink" title="服务端："></a>服务端：</h5><ol>
+<li>修正部分报错；</li>
+<li>修正缓存多线程问题；</li>
+<li>增加房间匹配算法的深度；</li>
+<li>去除统计模块的<code>mysql</code>能力，改为log</li>
+</ol>
+<h5 id="客户端：-43"><a href="#客户端：-43" class="headerlink" title="客户端："></a>客户端：</h5><p>无</p>
+<h4 id="准备工作：-40"><a href="#准备工作：-40" class="headerlink" title="准备工作："></a>准备工作：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 发维护公告</li>
+<li><input checked="" disabled="" type="checkbox"> 新增<code>log4j2</code>的<code>stat</code>日志配置</li>
+</ul>
+<h4 id="更新步骤：-42"><a href="#更新步骤：-42" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 内存快照<code>jmap -histo:live pid &gt; /data/jmap.txt</code></li>
+<li><input checked="" disabled="" type="checkbox"> 执行更新脚本</li>
+</ul>
+<h3 id="2020-02-26-星期三-8-25"><a href="#2020-02-26-星期三-8-25" class="headerlink" title="2020-02-26 星期三 8:25"></a>2020-02-26 星期三 8:25</h3><h4 id="本次更新内容-46"><a href="#本次更新内容-46" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务器端："><a href="#服务器端：" class="headerlink" title="服务器端："></a>服务器端：</h5><p>无</p>
+<h5 id="客户端：-44"><a href="#客户端：-44" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>更新客户端版本到<code>122</code></li>
+</ol>
+<h4 id="更新步骤：-43"><a href="#更新步骤：-43" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>gv</code></li>
+<li><input checked="" disabled="" type="checkbox"> 发布新版本</li>
+</ul>
+<h3 id="2020-02-26-星期三-7-30"><a href="#2020-02-26-星期三-7-30" class="headerlink" title="2020-02-26 星期三 7:30"></a>2020-02-26 星期三 7:30</h3><h4 id="本次更新内容-47"><a href="#本次更新内容-47" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务器端：-1"><a href="#服务器端：-1" class="headerlink" title="服务器端："></a>服务器端：</h5><ol>
+<li>升级<code>redis</code></li>
+<li>升级<code>jdk</code>版本到最新</li>
+<li>更新已知<code>bug</code></li>
+</ol>
+<h5 id="客户端"><a href="#客户端" class="headerlink" title="客户端:"></a>客户端:</h5><ol>
+<li>更新<code>121</code>版本的<code>csv</code>配置</li>
+</ol>
+<h4 id="更新步骤：-44"><a href="#更新步骤：-44" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 停旧包并打包备份</li>
+<li><input checked="" disabled="" type="checkbox"> 停新包</li>
+<li><input checked="" disabled="" type="checkbox"> 更新客户端csv</li>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>jdk</code>版本</li>
+<li><input checked="" disabled="" type="checkbox"> 升级<code>redis</code>到<code>16g</code></li>
+<li><input checked="" disabled="" type="checkbox"> 更新重启新包</li>
+<li><input checked="" disabled="" type="checkbox"> 发补偿邮件</li>
+<li><input checked="" disabled="" type="checkbox"> 停掉旧的监控，再<code>wolfapply2</code>开启新服务端口监控</li>
+</ul>
+<h3 id="2020-02-25-星期二-15-50"><a href="#2020-02-25-星期二-15-50" class="headerlink" title="2020-02-25 星期二  15:50"></a>2020-02-25 星期二  15:50</h3><h4 id="本次更新内容-48"><a href="#本次更新内容-48" class="headerlink" title="本次更新内容"></a>本次更新内容</h4><h5 id="服务器端：-2"><a href="#服务器端：-2" class="headerlink" title="服务器端："></a>服务器端：</h5><ol>
+<li>房间规则大改，新增我的房间，房间人气</li>
+<li>推荐房间算法修改</li>
+<li>实名认证&amp;考试</li>
+<li>暂时只删除废玩家，不落地</li>
+<li>新增<code>save,user</code>两个表的时间戳列，根据插入和修改时间自增。</li>
+<li>已知部分<code>bug</code>修复</li>
+</ol>
+<h5 id="客户端：-45"><a href="#客户端：-45" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>客户端版本更新至121</li>
+<li>房间列表&amp;我的房间修改</li>
+<li>实名认证&amp;考试</li>
+</ol>
+<h4 id="更新前准备："><a href="#更新前准备：" class="headerlink" title="更新前准备："></a>更新前准备：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 执行sql语句修改表<code>save</code>,<code>user</code>结构，增加时间戳列，并自动更新时间戳。</li>
+<li><input checked="" disabled="" type="checkbox"> 新增表<code>tell</code>,<code>mail</code>,<code>friend</code>,<code>apply</code>,<code>roomuser</code>，并且加上时间戳</li>
+<li><input checked="" disabled="" type="checkbox"> 检查<code>cleanModel</code>落地线程数量以及测试只删除废玩家不落地是否正常</li>
+<li><input checked="" disabled="" type="checkbox"> 合并或者拉新的<code>master</code>分支看飞哥那边</li>
+<li><input checked="" disabled="" type="checkbox"> 部署正式服对应的<code>svn</code>分支代码&amp;修改配置&amp;端口等</li>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>12345</code>端口服务的<code>java</code>内存配置</li>
+<li><input checked="" disabled="" type="checkbox"> 开放服务器对应的安全组端口</li>
+<li><input checked="" disabled="" type="checkbox"> 将旧包落地开关关掉！</li>
+<li><input checked="" disabled="" type="checkbox"> 修改新包<code>ws</code>端口号为<code>12346</code>&amp;<code>http</code>端口号为<code>7080</code></li>
+<li><input checked="" disabled="" type="checkbox"> 将旧包的消息订阅关闭</li>
+</ul>
+<h4 id="更新步骤：-45"><a href="#更新步骤：-45" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> <code>dump</code>内存<code>jmap -dump:format=b,file=/data/heapdump.bin $pid</code></li>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>gv</code>为<code>121</code></li>
+<li><input checked="" disabled="" type="checkbox"> 修改<code>sv</code>为<code>30</code></li>
+<li><input checked="" disabled="" type="checkbox"> 停审批服</li>
+<li><input checked="" disabled="" type="checkbox"> 停旧包</li>
+<li><input checked="" disabled="" type="checkbox"> 发布新版本</li>
+<li><input checked="" disabled="" type="checkbox"> 修改旧包名为<code>wolf2_game3</code>将新包命名为<code>wolf2_game2</code></li>
+<li><input checked="" disabled="" type="checkbox"> 先启动新包</li>
+<li><input checked="" disabled="" type="checkbox"> 再启动旧包</li>
+<li><input checked="" disabled="" type="checkbox"> 发放补偿邮件(策划发)</li>
+</ul>
+<h3 id="2020-02-12-星期二-9-20"><a href="#2020-02-12-星期二-9-20" class="headerlink" title="2020-02-12 星期二 9:20"></a>2020-02-12 星期二 9:20</h3><h4 id="本次更新内容："><a href="#本次更新内容：" class="headerlink" title="本次更新内容："></a>本次更新内容：</h4><h5 id="服务器："><a href="#服务器：" class="headerlink" title="服务器："></a>服务器：</h5><p>无</p>
+<h5 id="客户端：-46"><a href="#客户端：-46" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>更新客户端版本至120</li>
+<li>解决狼人杀有概率不结算的问题</li>
+</ol>
+<h4 id="更新步骤：-46"><a href="#更新步骤：-46" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ol>
+<li>停审批服</li>
+<li>修改gv为120(sv不需要修改)</li>
+<li>发布客户端版本</li>
+</ol>
+<h3 id="2020-02-11-星期二-9-00"><a href="#2020-02-11-星期二-9-00" class="headerlink" title="2020-02-11 星期二 9:00"></a>2020-02-11 星期二 9:00</h3><h4 id="本次更新内容：-1"><a href="#本次更新内容：-1" class="headerlink" title="本次更新内容："></a>本次更新内容：</h4><h5 id="服务器：-1"><a href="#服务器：-1" class="headerlink" title="服务器："></a>服务器：</h5><ol>
+<li>修改了金币赛场的bug；</li>
+<li>修改房间排序的bug；</li>
+<li>限制init之前不处理任何命令；</li>
+<li>兼容玩家下线后仍然无法退出房间的脏数据；</li>
+</ol>
+<h5 id="客户端：-47"><a href="#客户端：-47" class="headerlink" title="客户端："></a>客户端：</h5><ol>
+<li>更新客户端版本至119</li>
+<li>客户端增加语音在线标志；</li>
+<li>客户端修正邀请进入房间的顺序问题。</li>
+</ol>
+<h4 id="更新步骤：-47"><a href="#更新步骤：-47" class="headerlink" title="更新步骤："></a>更新步骤：</h4><ol>
+<li>服务端停服</li>
+<li>发布客户端版本</li>
+<li>修改gv为119(sv不需要修改)</li>
+<li>更新重启服务端</li>
+<li>补偿邮件发放</li>
+</ol>
+<h3 id="2020-02-09-星期日-4-30"><a href="#2020-02-09-星期日-4-30" class="headerlink" title="2020-02-09 星期日 4:30"></a>2020-02-09 星期日 4:30</h3><p>本次更新内容：</p>
+<ol>
+<li>开启落地开关</li>
+</ol>
+<h3 id="2020-02-08-星期六-10-00"><a href="#2020-02-08-星期六-10-00" class="headerlink" title="2020-02-08 星期六 10:00"></a>2020-02-08 星期六 10:00</h3><p>本次更新内容：</p>
+<ol>
+<li>修改消息订阅线程数从原来的cpu核心数/2改为cpu核心数</li>
+<li>发布客户端118版本</li>
+</ol>
+<h3 id="2020-02-07-星期五-4-30"><a href="#2020-02-07-星期五-4-30" class="headerlink" title="2020-02-07 星期五 4:30"></a>2020-02-07 星期五 4:30</h3><p>本次更新内容：</p>
+<ol>
+<li>因为落地有报错，所以关了落地开关重启了服务器</li>
+</ol>
+<h3 id="2020-02-06-星期四-4-30"><a href="#2020-02-06-星期四-4-30" class="headerlink" title="2020-02- 06 星期四 4:30"></a>2020-02- 06 星期四 4:30</h3><p>本次更新内容：</p>
+<ol>
+<li>修改落地线程数量从原来的cpu核心数*4，改为cpu核心数/2</li>
+</ol>
+<h3 id="2020-02-05-星期三-10-42"><a href="#2020-02-05-星期三-10-42" class="headerlink" title="2020-02-05 星期三 10:42"></a>2020-02-05 星期三 10:42</h3><p>本次更新内容：</p>
+<ol>
+<li>更新后游戏增加金币模式（试运行）</li>
+<li>游戏同时修改了大量已知bug </li>
+<li>降低了一些游戏道具价格</li>
+<li>发布新版客户端117</li>
+</ol>
+<h3 id="2020-01-30-星期四-4-30"><a href="#2020-01-30-星期四-4-30" class="headerlink" title="2020-01-30 星期四 4:30"></a>2020-01-30 星期四 4:30</h3><p>本次更新内容：</p>
+<ol>
+<li>升级redis从8g到12g</li>
+</ol>
+<h3 id="2020-01-27-星期日-4-30"><a href="#2020-01-27-星期日-4-30" class="headerlink" title="2020-01-27 星期日 4:30"></a>2020-01-27 星期日 4:30</h3><p>本次更新内容：</p>
+<ol>
+<li>切换至16c 64g的服务器</li>
+<li>程序&amp;配置部分未作修改</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+      
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag"><i class="fa fa-tag"></i> 运维</a>
+          </div>
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#2021-01-31-周日-7-00"><span class="nav-number">1.</span> <span class="nav-text">2021-01-31 周日  7:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容"><span class="nav-number">1.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端："><span class="nav-number">1.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端："><span class="nav-number">1.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤："><span class="nav-number">1.2.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2021-01-30-星期六-9-00"><span class="nav-number">2.</span> <span class="nav-text">2021-01-30 星期六  9:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-1"><span class="nav-number">2.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-1"><span class="nav-number">2.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-1"><span class="nav-number">2.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-1"><span class="nav-number">2.2.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-12-30-星期三-10-00"><span class="nav-number">3.</span> <span class="nav-text">2020-12-30 星期三  10:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-2"><span class="nav-number">3.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-2"><span class="nav-number">3.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-2"><span class="nav-number">3.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-2"><span class="nav-number">3.2.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-12-21-星期一-10-50"><span class="nav-number">4.</span> <span class="nav-text">2020-12-21 星期一  10:50</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-3"><span class="nav-number">4.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-3"><span class="nav-number">4.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-3"><span class="nav-number">4.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作："><span class="nav-number">4.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-3"><span class="nav-number">4.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-12-04-星期五-14-15"><span class="nav-number">5.</span> <span class="nav-text">2020-12-04 星期五  14:15</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-4"><span class="nav-number">5.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-4"><span class="nav-number">5.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-4"><span class="nav-number">5.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-1"><span class="nav-number">5.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-4"><span class="nav-number">5.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-11-20-星期五-11-10"><span class="nav-number">6.</span> <span class="nav-text">2020-11-20 星期五  11:10</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-5"><span class="nav-number">6.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-5"><span class="nav-number">6.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-5"><span class="nav-number">6.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-2"><span class="nav-number">6.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-5"><span class="nav-number">6.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-11-13-星期五-3-00"><span class="nav-number">7.</span> <span class="nav-text">2020-11-13 星期五  3:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-6"><span class="nav-number">7.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-6"><span class="nav-number">7.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-6"><span class="nav-number">7.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-3"><span class="nav-number">7.2.</span> <span class="nav-text">准备工作：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-11-13-星期五-3-00-1"><span class="nav-number">8.</span> <span class="nav-text">2020-11-13 星期五  3:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-7"><span class="nav-number">8.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-7"><span class="nav-number">8.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-7"><span class="nav-number">8.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-4"><span class="nav-number">8.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-6"><span class="nav-number">8.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-10-01-星期四-3-00"><span class="nav-number">9.</span> <span class="nav-text">2020-10-01 星期四  3:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-8"><span class="nav-number">9.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-8"><span class="nav-number">9.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-8"><span class="nav-number">9.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-5"><span class="nav-number">9.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-7"><span class="nav-number">9.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-09-30-星期三-9-00"><span class="nav-number">10.</span> <span class="nav-text">2020-09-30 星期三  9:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-9"><span class="nav-number">10.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-9"><span class="nav-number">10.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-9"><span class="nav-number">10.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-6"><span class="nav-number">10.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-8"><span class="nav-number">10.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-09-29-星期二-14-00"><span class="nav-number">11.</span> <span class="nav-text">2020-09-29 星期二   14:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-10"><span class="nav-number">11.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-10"><span class="nav-number">11.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-10"><span class="nav-number">11.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-7"><span class="nav-number">11.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-9"><span class="nav-number">11.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-07-01-星期四-11-40"><span class="nav-number">12.</span> <span class="nav-text">2020-07-01 星期四   11:40</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-11"><span class="nav-number">12.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-11"><span class="nav-number">12.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-11"><span class="nav-number">12.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-8"><span class="nav-number">12.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-10"><span class="nav-number">12.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-06-18-星期四-10-13"><span class="nav-number">13.</span> <span class="nav-text">2020-06-18 星期四   10:13</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-12"><span class="nav-number">13.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-12"><span class="nav-number">13.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-12"><span class="nav-number">13.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-9"><span class="nav-number">13.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-11"><span class="nav-number">13.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-06-17-星期三-10-20"><span class="nav-number">14.</span> <span class="nav-text">2020-06-17 星期三   10:20</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本次更新内容-13"><span class="nav-number">15.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-14"><span class="nav-number">15.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-13"><span class="nav-number">15.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-13"><span class="nav-number">15.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-10"><span class="nav-number">15.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-12"><span class="nav-number">15.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-05-14-星期四-10-00"><span class="nav-number">16.</span> <span class="nav-text">2020-05-14 星期四   10:00</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本次更新内容-15"><span class="nav-number">17.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-16"><span class="nav-number">17.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-14"><span class="nav-number">17.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-14"><span class="nav-number">17.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-11"><span class="nav-number">17.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-13"><span class="nav-number">17.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-05-08-星期五-06-31"><span class="nav-number">18.</span> <span class="nav-text">2020-05-08 星期五   06:31</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-17"><span class="nav-number">18.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-15"><span class="nav-number">18.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-15"><span class="nav-number">18.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-12"><span class="nav-number">18.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-14"><span class="nav-number">18.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-04-30-星期四-10-20"><span class="nav-number">19.</span> <span class="nav-text">2020-04-30 星期四   10:20</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-18"><span class="nav-number">19.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-16"><span class="nav-number">19.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-16"><span class="nav-number">19.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-13"><span class="nav-number">19.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-15"><span class="nav-number">19.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-04-17-星期五-10-20"><span class="nav-number">20.</span> <span class="nav-text">2020-04-17 星期五   10:20</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-19"><span class="nav-number">20.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-17"><span class="nav-number">20.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-17"><span class="nav-number">20.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-14"><span class="nav-number">20.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-16"><span class="nav-number">20.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-04-15-星期三-11-47"><span class="nav-number">21.</span> <span class="nav-text">2020-04-15 星期三   11:47</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-20"><span class="nav-number">21.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-18"><span class="nav-number">21.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-18"><span class="nav-number">21.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-15"><span class="nav-number">21.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-17"><span class="nav-number">21.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-04-15-星期三-11-40"><span class="nav-number">22.</span> <span class="nav-text">2020-04-15 星期三   11:40</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-21"><span class="nav-number">22.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-19"><span class="nav-number">22.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-19"><span class="nav-number">22.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-16"><span class="nav-number">22.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-18"><span class="nav-number">22.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-04-09-星期四-07-00"><span class="nav-number">23.</span> <span class="nav-text">2020-04-09 星期四   07:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-22"><span class="nav-number">23.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-20"><span class="nav-number">23.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-20"><span class="nav-number">23.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-17"><span class="nav-number">23.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-19"><span class="nav-number">23.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-04-08-星期三-07-00"><span class="nav-number">24.</span> <span class="nav-text">2020-04-08 星期三  07:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-23"><span class="nav-number">24.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-21"><span class="nav-number">24.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-21"><span class="nav-number">24.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-18"><span class="nav-number">24.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-20"><span class="nav-number">24.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-04-04-星期三-00-00"><span class="nav-number">25.</span> <span class="nav-text">2020-04-04 星期三  00:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-24"><span class="nav-number">25.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-22"><span class="nav-number">25.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-22"><span class="nav-number">25.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-19"><span class="nav-number">25.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-21"><span class="nav-number">25.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-04-01-星期三-7-00"><span class="nav-number">26.</span> <span class="nav-text">2020-04-01 星期三  7:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-25"><span class="nav-number">26.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-23"><span class="nav-number">26.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-23"><span class="nav-number">26.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-20"><span class="nav-number">26.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-22"><span class="nav-number">26.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-28-星期六-7-00"><span class="nav-number">27.</span> <span class="nav-text">2020-03-28 星期六  7:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-26"><span class="nav-number">27.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-24"><span class="nav-number">27.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-24"><span class="nav-number">27.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-21"><span class="nav-number">27.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-23"><span class="nav-number">27.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-27-星期五-7-00"><span class="nav-number">28.</span> <span class="nav-text">2020-03-27 星期五  7:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-27"><span class="nav-number">28.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-25"><span class="nav-number">28.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-25"><span class="nav-number">28.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-22"><span class="nav-number">28.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-24"><span class="nav-number">28.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-26-星期四-16-25"><span class="nav-number">29.</span> <span class="nav-text">2020-03-26 星期四  16:25</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-28"><span class="nav-number">29.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-26"><span class="nav-number">29.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-26"><span class="nav-number">29.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-23"><span class="nav-number">29.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-25"><span class="nav-number">29.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-26-星期四-7-25"><span class="nav-number">30.</span> <span class="nav-text">2020-03-26 星期四  7:25</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-29"><span class="nav-number">30.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-27"><span class="nav-number">30.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-27"><span class="nav-number">30.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-24"><span class="nav-number">30.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-26"><span class="nav-number">30.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-26-星期四-7-00"><span class="nav-number">31.</span> <span class="nav-text">2020-03-26 星期四  7:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-30"><span class="nav-number">31.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-28"><span class="nav-number">31.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-28"><span class="nav-number">31.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-25"><span class="nav-number">31.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-27"><span class="nav-number">31.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-25-星期三-8-15"><span class="nav-number">32.</span> <span class="nav-text">2020-03-25 星期三  8:15</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-31"><span class="nav-number">32.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-29"><span class="nav-number">32.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-29"><span class="nav-number">32.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-26"><span class="nav-number">32.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-28"><span class="nav-number">32.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-25-星期三-7-00"><span class="nav-number">33.</span> <span class="nav-text">2020-03-25 星期三  7:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-32"><span class="nav-number">33.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-30"><span class="nav-number">33.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-30"><span class="nav-number">33.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-27"><span class="nav-number">33.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-29"><span class="nav-number">33.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-24-星期二-17-13"><span class="nav-number">34.</span> <span class="nav-text">2020-03-24 星期二  17:13</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-33"><span class="nav-number">34.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-31"><span class="nav-number">34.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-31"><span class="nav-number">34.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-28"><span class="nav-number">34.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-30"><span class="nav-number">34.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-24-星期二-10-00"><span class="nav-number">35.</span> <span class="nav-text">2020-03-24 星期二 10:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-34"><span class="nav-number">35.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-32"><span class="nav-number">35.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-32"><span class="nav-number">35.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-29"><span class="nav-number">35.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-31"><span class="nav-number">35.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-21-星期五-7-00"><span class="nav-number">36.</span> <span class="nav-text">2020-03-21 星期五 7:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-35"><span class="nav-number">36.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-33"><span class="nav-number">36.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-33"><span class="nav-number">36.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-30"><span class="nav-number">36.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-32"><span class="nav-number">36.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-20-星期五-10-00"><span class="nav-number">37.</span> <span class="nav-text">2020-03-20 星期五 10:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-36"><span class="nav-number">37.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-34"><span class="nav-number">37.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-34"><span class="nav-number">37.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-31"><span class="nav-number">37.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-33"><span class="nav-number">37.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-19-星期四-9-00"><span class="nav-number">38.</span> <span class="nav-text">2020-03-19 星期四 9:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-37"><span class="nav-number">38.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-35"><span class="nav-number">38.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-35"><span class="nav-number">38.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-32"><span class="nav-number">38.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-34"><span class="nav-number">38.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-18-星期三-11-00"><span class="nav-number">39.</span> <span class="nav-text">2020-03-18 星期三 11:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-38"><span class="nav-number">39.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-36"><span class="nav-number">39.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-36"><span class="nav-number">39.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-33"><span class="nav-number">39.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-35"><span class="nav-number">39.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-16-星期一-4-30"><span class="nav-number">40.</span> <span class="nav-text">2020-03-16 星期一 4:30</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-39"><span class="nav-number">40.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-37"><span class="nav-number">40.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-37"><span class="nav-number">40.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-34"><span class="nav-number">40.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-36"><span class="nav-number">40.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-11-星期三-7-30"><span class="nav-number">41.</span> <span class="nav-text">2020-03-11 星期三 7:30</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-40"><span class="nav-number">41.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-38"><span class="nav-number">41.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-38"><span class="nav-number">41.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-35"><span class="nav-number">41.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-37"><span class="nav-number">41.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-10-星期二-7-30"><span class="nav-number">42.</span> <span class="nav-text">2020-03-10 星期二 7:30</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-41"><span class="nav-number">42.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-39"><span class="nav-number">42.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-39"><span class="nav-number">42.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-36"><span class="nav-number">42.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-38"><span class="nav-number">42.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-04-星期三-7-30"><span class="nav-number">43.</span> <span class="nav-text">2020-03-04 星期三 7:30</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-42"><span class="nav-number">43.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-40"><span class="nav-number">43.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-40"><span class="nav-number">43.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-37"><span class="nav-number">43.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-39"><span class="nav-number">43.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-03-03-星期二-7-30"><span class="nav-number">44.</span> <span class="nav-text">2020-03-03 星期二 7:30</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-43"><span class="nav-number">44.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-41"><span class="nav-number">44.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-41"><span class="nav-number">44.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-38"><span class="nav-number">44.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-40"><span class="nav-number">44.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-02-27-星期四-7-43"><span class="nav-number">45.</span> <span class="nav-text">2020-02-27 星期四 7:43</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-44"><span class="nav-number">45.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-42"><span class="nav-number">45.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-42"><span class="nav-number">45.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-39"><span class="nav-number">45.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-41"><span class="nav-number">45.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-02-27-星期四-7-30"><span class="nav-number">46.</span> <span class="nav-text">2020-02-27 星期四 7:30</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-45"><span class="nav-number">46.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端：-43"><span class="nav-number">46.1.1.</span> <span class="nav-text">服务端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-43"><span class="nav-number">46.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工作：-40"><span class="nav-number">46.2.</span> <span class="nav-text">准备工作：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-42"><span class="nav-number">46.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-02-26-星期三-8-25"><span class="nav-number">47.</span> <span class="nav-text">2020-02-26 星期三 8:25</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-46"><span class="nav-number">47.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务器端："><span class="nav-number">47.1.1.</span> <span class="nav-text">服务器端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-44"><span class="nav-number">47.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-43"><span class="nav-number">47.2.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-02-26-星期三-7-30"><span class="nav-number">48.</span> <span class="nav-text">2020-02-26 星期三 7:30</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-47"><span class="nav-number">48.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务器端：-1"><span class="nav-number">48.1.1.</span> <span class="nav-text">服务器端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端"><span class="nav-number">48.1.2.</span> <span class="nav-text">客户端:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-44"><span class="nav-number">48.2.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-02-25-星期二-15-50"><span class="nav-number">49.</span> <span class="nav-text">2020-02-25 星期二  15:50</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容-48"><span class="nav-number">49.1.</span> <span class="nav-text">本次更新内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务器端：-2"><span class="nav-number">49.1.1.</span> <span class="nav-text">服务器端：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-45"><span class="nav-number">49.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新前准备："><span class="nav-number">49.2.</span> <span class="nav-text">更新前准备：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-45"><span class="nav-number">49.3.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-02-12-星期二-9-20"><span class="nav-number">50.</span> <span class="nav-text">2020-02-12 星期二 9:20</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容："><span class="nav-number">50.1.</span> <span class="nav-text">本次更新内容：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务器："><span class="nav-number">50.1.1.</span> <span class="nav-text">服务器：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-46"><span class="nav-number">50.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-46"><span class="nav-number">50.2.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-02-11-星期二-9-00"><span class="nav-number">51.</span> <span class="nav-text">2020-02-11 星期二 9:00</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本次更新内容：-1"><span class="nav-number">51.1.</span> <span class="nav-text">本次更新内容：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务器：-1"><span class="nav-number">51.1.1.</span> <span class="nav-text">服务器：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端：-47"><span class="nav-number">51.1.2.</span> <span class="nav-text">客户端：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新步骤：-47"><span class="nav-number">51.2.</span> <span class="nav-text">更新步骤：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-02-09-星期日-4-30"><span class="nav-number">52.</span> <span class="nav-text">2020-02-09 星期日 4:30</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-02-08-星期六-10-00"><span class="nav-number">53.</span> <span class="nav-text">2020-02-08 星期六 10:00</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-02-07-星期五-4-30"><span class="nav-number">54.</span> <span class="nav-text">2020-02-07 星期五 4:30</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-02-06-星期四-4-30"><span class="nav-number">55.</span> <span class="nav-text">2020-02- 06 星期四 4:30</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-02-05-星期三-10-42"><span class="nav-number">56.</span> <span class="nav-text">2020-02-05 星期三 10:42</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-01-30-星期四-4-30"><span class="nav-number">57.</span> <span class="nav-text">2020-01-30 星期四 4:30</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2020-01-27-星期日-4-30"><span class="nav-number">58.</span> <span class="nav-text">2020-01-27 星期日 4:30</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Fart"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Fart</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fengbrute" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fengbrute" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fengbrute@qq.com" title="E-Mail → mailto:fengbrute@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fengbrute" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fengbrute" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fart</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">155k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:29</span>
+</div>
+
+
+        
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              })
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=Cu5hv7V1QMPq7AdjyURssVXX-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : 'Cu5hv7V1QMPq7AdjyURssVXX-gzGzoHsz',
+            'X-LC-Key'    : 'toOnmwMBckjo5Jyi54jK5ejF',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('div.pdf').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/pdfobject@2/pdfobject.min.js', () => {
+    document.querySelectorAll('div.pdf').forEach(element => {
+      PDFObject.embed(element.getAttribute('target'), element, {
+        pdfOpenParams: {
+          navpanes : 0,
+          toolbar  : 0,
+          statusbar: 0,
+          pagemode : 'thumbs',
+          view     : 'FitH'
+        },
+        PDFJS_URL: '/lib/pdf/web/viewer.html',
+        height   : element.getAttribute('height') || '500px'
+      });
+    });
+  }, window.PDFObject);
+}
+</script>
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'dark',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Cu5hv7V1QMPq7AdjyURssVXX-gzGzoHsz',
+      appKey     : 'toOnmwMBckjo5Jyi54jK5ejF',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
